@@ -38,7 +38,8 @@ t_ignore = ' \t'
 
 
 def t_ID(t):
-    r'[A-Z_a-z][A-Z_a-z0-9]*'
+    #r'[A-Z_a-z][A-Z_a-z0-9]*'
+    r'^[A-Z]+|^[a-z]+'
     t.type = reserved.get(t.value, 'ID')
     return t
 
