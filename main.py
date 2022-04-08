@@ -1,19 +1,38 @@
 import ply.lex as lex  # importando a biblioteca ply para o léxico
 
 reserved = {
+    'typedef': 'TYPEDEF',
+    'using': 'USING',
+    'namespace': 'NAMESPACE',
+    'sizeof': 'SIZEOF',
+    'typeid': 'TYPEID',
+    'try': 'TRY',
+    #TIPOS
+    'bool': 'BOOL',
     'int': 'INT',
-    'char': 'CHAR',
+    #Booleanos
     'false': 'FALSE',
     'true': 'TRUE',
+    'not': 'NOT',
+    'or': 'OR',
+    'xor': 'XOR',
+    'and': 'AND',
+    #Condicionais
     'if': 'IF',
     'else': 'ELSE',
+    #Funcoes/Structs
+    'struct': 'STRUCT',
     'void': 'VOID',
+    'return': 'RETURN',
+    #Classes
+    'static': 'STATIC',
+    'public': 'PUBLIC',
+    'this': 'THIS',
     'class': 'CLASS',
     'new': 'NEW',
-    'return': 'RETURN',
+    #Repeticao
     'for': 'FOR',
     'while': 'WHILE',
-    'do': 'DO'
 }
 
 #Definindo Tokens e seus padroes
@@ -22,24 +41,25 @@ tokens = [
     'INT_V',
     'ID',
     'STRING',
-    'CHAR_V',
     'PARENT_ABRE',
     'PARENT_FECHA',
-    'ASPAS_SIMPLES',
-    'ASPAS_DUPLAS',
+    'COMENTARIO',
 ] + list(reserved.values())
 
 t_PARENT_ABRE = r'\('
 t_PARENT_FECHA = r'\)' 
 t_SOMA = r'\+'
-t_STRING = '.+|^".+"$'
-t_CHAR_V = "^'.'$"
+t_STRING = r'"(.|\n)*"'
 t_ignore = ' \t'
+
+def t_COMENTARIO(t):
+  r'(/\*(.|\n)*\*/)|(//.*)'
+  #r'(/\*(.|\n)*?\*/)|(//.*)'
+  return t
 
 
 def t_ID(t):
-    #r'[A-Z_a-z][A-Z_a-z0-9]*'
-    r'^[A-Z]+|^[a-z]+'
+    r'[A-Z_a-z][A-Z_a-z0-9]*'
     t.type = reserved.get(t.value, 'ID')
     return t
 
@@ -65,7 +85,7 @@ lexema = lex.lex()
 
 #Lendo conteúdo que será analisado pelo analisador léxico
 
-lexema.input('')  #input será o código em c++ propriamente dito
+lexema.input('"eede\n"')  #input será o código em c++ propriamente dito
 
 for token in lexema:
     print(token.type, token.value, token.lineno, token.lexpos)
