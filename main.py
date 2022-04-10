@@ -41,28 +41,60 @@ tokens = [
     'SUB',
     'MULT',
     'DIV',
+    'MODULO',
     'INT_V',
     'ID',
+    'RECEBER',
+    'MAIOR_Q',
+    'MAIOR_IGUAL',
+    'MENOR_IGUAL',
+    'MENOR_Q',
+    'IGUAL',
+    'DIFERENTE',
+    'OP_E',
+    'OP_OU',
+    'OP_OU_EX',
+    'OP_NOT',
     'STRING',
     'PARENT_ABRE',
     'PARENT_FECHA',
     'COLCHETE_ABRE',
     'COLCHETE_FECHA',
+    'CHAVE_ABRE',
+    'CHAVE_FECHA',
     'COMENTARIO',
     'PONTO_VIRG',
+    'VIRGULA',
+    'ENDERECO',
 ] + list(reserved.values())
 
 t_PARENT_ABRE = r'\('
 t_PARENT_FECHA = r'\)' 
 t_COLCHETE_ABRE = r'\['
 t_COLCHETE_FECHA = r'\]'
+t_CHAVE_ABRE = r'{'
+t_CHAVE_FECHA = r'}'
 t_SOMA = r'\+'
 t_SUB = r'-'
 t_MULT = r'\*'
 t_DIV = r'/'
+t_MAIOR_Q = r'>'
+t_MENOR_Q = r'<'
+t_MAIOR_IGUAL = '>='
+t_MENOR_IGUAL = '<='
+t_OP_E = r'&&'
+t_OP_OU = r'\|\|'
+t_OP_OU_EX = r'\^'
+t_OP_NOT = '!'
+t_MODULO = '%'
 t_STRING = r'"(.|\n)*"'
 t_ignore = ' \t'
-t_PONTO_VIRG = '\;'
+t_PONTO_VIRG = ';'
+t_ENDERECO = '&'
+t_IGUAL = '=='
+t_DIFERENTE = '!='
+t_RECEBER = '='
+t_VIRGULA = ','
 
 def t_COMENTARIO(t):
   r'(/\*(.|\n)*\*/)|(//.*)'
@@ -97,7 +129,7 @@ lexema = lex.lex()
 
 #Lendo conteúdo que será analisado pelo analisador léxico
 
-lexema.input(';;;;;;;')  #input será o código em c++ propriamente dito
+lexema.input('')  #input será o código em c++ propriamente dito
 
 for token in lexema:
     print(token.type, token.value, token.lineno, token.lexpos)
