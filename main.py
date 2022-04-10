@@ -46,17 +46,23 @@ tokens = [
     'STRING',
     'PARENT_ABRE',
     'PARENT_FECHA',
+    'COLCHETE_ABRE',
+    'COLCHETE_FECHA',
     'COMENTARIO',
+    'PONTO_VIRG',
 ] + list(reserved.values())
 
 t_PARENT_ABRE = r'\('
 t_PARENT_FECHA = r'\)' 
+t_COLCHETE_ABRE = r'\['
+t_COLCHETE_FECHA = r'\]'
 t_SOMA = r'\+'
 t_SUB = r'-'
 t_MULT = r'\*'
 t_DIV = r'/'
 t_STRING = r'"(.|\n)*"'
 t_ignore = ' \t'
+t_PONTO_VIRG = '\;'
 
 def t_COMENTARIO(t):
   r'(/\*(.|\n)*\*/)|(//.*)'
@@ -91,7 +97,7 @@ lexema = lex.lex()
 
 #Lendo conteúdo que será analisado pelo analisador léxico
 
-lexema.input('/')  #input será o código em c++ propriamente dito
+lexema.input(';')  #input será o código em c++ propriamente dito
 
 for token in lexema:
     print(token.type, token.value, token.lineno, token.lexpos)
