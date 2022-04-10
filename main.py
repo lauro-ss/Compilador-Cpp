@@ -97,7 +97,7 @@ lexema = lex.lex()
 
 #Lendo conteúdo que será analisado pelo analisador léxico
 
-lexema.input(';')  #input será o código em c++ propriamente dito
+lexema.input(';;;;;;;')  #input será o código em c++ propriamente dito
 
 for token in lexema:
     print(token.type, token.value, token.lineno, token.lexpos)
