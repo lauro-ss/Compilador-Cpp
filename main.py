@@ -38,6 +38,9 @@ reserved = {
 #Definindo Tokens e seus padroes
 tokens = [
     'SOMA',
+    'SUB',
+    'MULT',
+    'DIV',
     'INT_V',
     'ID',
     'STRING',
@@ -49,6 +52,9 @@ tokens = [
 t_PARENT_ABRE = r'\('
 t_PARENT_FECHA = r'\)' 
 t_SOMA = r'\+'
+t_SUB = r'-'
+t_MULT = r'\*'
+t_DIV = r'/'
 t_STRING = r'"(.|\n)*"'
 t_ignore = ' \t'
 
@@ -85,7 +91,7 @@ lexema = lex.lex()
 
 #Lendo conteúdo que será analisado pelo analisador léxico
 
-lexema.input('"eede\n"')  #input será o código em c++ propriamente dito
+lexema.input('/')  #input será o código em c++ propriamente dito
 
 for token in lexema:
     print(token.type, token.value, token.lineno, token.lexpos)
