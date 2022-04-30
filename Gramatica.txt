@@ -1,0 +1,44 @@
+program -> cpp$
+cpp -> decl_classe 
+     | decl_funcao 
+     | decl_variavel
+     | decl_classe  cpp
+     | decl_funcao  cpp
+     | decl_variavel cpp
+decl_classe -> CLASS ID body;
+decl_funcao -> tipo ID(parametros) body
+parametros -> ID ID
+            | ID ID , parametros
+body -> { comandos }
+comandos -> | decl_variavel
+            | decl_variavel comandos
+            | WHILE(exp) body
+            | WHILE(exp) body comandos
+
+decl_variavel ->  tipo ID; | tipo ID = exp;
+tipo -> INT | BOOL | ID
+
+using namespace id GLOBAL | INCLUDE GLOBAL
+INCLUDE -> #include <id> INCLUDE | #include <id>
+GLOBAL -> TYPE id GLOBAL FUNC | TYPE id EXP GLOBAL FUNC | FUNC
+FUNC -> TYPE id(PARAM){ EXP } | TYPE id( ){ EXP }
+PARAM -> TYPE id, PARAM | TYPE id
+EXP -> SUM EXP| SUB EXP | MULT EXP | DIV EXP | SUM | SUB | MULT | DIV 
+SUM -> exp + exp SUM | id + id
+SUB -> id - id SUB | id - id
+MULT -> id * id MULT | id * id
+DIV ->  id / id DIV | id / id
+TYPE -> int | boolean
+
+type id  | id
+
+fulaninho -> type id
+              | id
+
+
+
+exp -> exp + exp1 | exp1 
+
+exp1 -> exp1 - exp2
+
+| NUM | ID  | call  
