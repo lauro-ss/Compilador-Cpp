@@ -66,6 +66,11 @@ tokens = [
     'PONTO_VIRG',
     'VIRGULA',
     'ENDERECO',
+    'PONTO',
+    'SETA',
+    'DOIS_PONTOS',
+    'MAIS_MAIS',
+    'MENOS_MENOS'
 ] + list(reserved.values())
 
 t_PARENT_ABRE = r'\('
@@ -94,6 +99,11 @@ t_IGUAL = '=='
 t_DIFERENTE = '!='
 t_RECEBER = '='
 t_VIRGULA = ','
+t_PONTO = r'\.'
+t_SETA = r'-\>'
+t_DOIS_PONTOS = r':'
+t_MAIS_MAIS = r'\+\+'
+t_MENOS_MENOS = r'\-\-'
 
 t_ignore = ' \t'
 

@@ -5,18 +5,30 @@ cpp -> decl_classe
      | decl_classe  cpp
      | decl_funcao  cpp
      | decl_variavel cpp
-decl_classe -> CLASS ID body;
+decl_classe -> CLASS ID body_class;
 decl_funcao -> tipo ID(parametros) body
+             | tipo ID(parametros) body decl_funcao
 parametros -> ID ID
             | ID ID , parametros
+body_class -> { PUBLIC: decl_variavel } 
+            | { PUBLIC: decl_funcao }
 body -> { comandos }
 comandos -> | decl_variavel
             | decl_variavel comandos
             | WHILE(exp) body
             | WHILE(exp) body comandos
 
-decl_variavel ->  tipo ID; | tipo ID = exp;
+decl_variavel ->  tipo ID; 
+              | tipo ID = exp;
+              | tipo ID; decl_variavel
+              | tipo ID = exp; decl_variavel
+
 tipo -> INT | BOOL | ID
+
+exp -> exp + exp_2 | exp - exp_2
+exp_1 -> exp * exp_3 | exp / exp_2
+exp_
+
 
 using namespace id GLOBAL | INCLUDE GLOBAL
 INCLUDE -> #include <id> INCLUDE | #include <id>
