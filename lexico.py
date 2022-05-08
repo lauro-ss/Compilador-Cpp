@@ -10,6 +10,7 @@ reserved = {
     #TIPOS
     'bool': 'BOOL',
     'int': 'INT',
+    'string': 'STRING',
     #Booleanos
     'false': 'FALSE',
     'true': 'TRUE',
@@ -55,7 +56,7 @@ tokens = [
     'OP_OU',
     'OP_OU_EX',
     'OP_NOT',
-    'STRING',
+    'STRING_V',
     'PARENT_ABRE',
     'PARENT_FECHA',
     'COLCHETE_ABRE',
@@ -92,7 +93,7 @@ t_OP_OU = r'\|\|'
 t_OP_OU_EX = r'\^'
 t_OP_NOT = '!'
 t_MODULO = '%'
-t_STRING = r'"(.|\n)*"'
+t_STRING_V = '"(.|\n)*"'
 t_PONTO_VIRG = ';'
 t_ENDERECO = '&'
 t_IGUAL = '=='

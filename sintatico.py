@@ -156,7 +156,7 @@ def p_exp_9(p):
            | TRUE
            | FALSE
            | chamada_funcao
-           | STRING
+           | STRING_V
            | PARENT_ABRE exp PARENT_FECHA'''
 
 
@@ -176,12 +176,13 @@ def p_condicional_1(p):
 
 def p_condicional_2(p):
     '''condicional_2 : IF PARENT_ABRE exp PARENT_FECHA body
-                     | IF PARENT_ABRE exp PARENT_FECHA comando'''
+                     | IF PARENT_ABRE exp PARENT_FECHA comando
+                     | IF PARENT_ABRE exp PARENT_FECHA condicional_1 ELSE condicional_2'''
 
 def p_rest_if(p):
     '''rest_if : condicional_1 ELSE condicional_1
-               | condicional_1 ELSE body
                | body ELSE body
+               | condicional_1 ELSE body
                | body ELSE condicional_1'''
 
 

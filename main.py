@@ -14,7 +14,8 @@ e = '''int main(){
 
 d = '''
 void main(){
-  if(2 + 2){
+  teste = "2";
+  if(a){
     if(2+2){
       a = "2";
       a = "2";
@@ -28,7 +29,9 @@ void main(){
       if(true)
           a = 2;
       else
-          a = 2;
+          a = 3;
+    else{
+          a = 2;}
 }
 }'''
 
@@ -49,4 +52,4 @@ parser = yacc.yacc()
 #parser.parse(debug=True)
 parser.parse(debug=False)
 #for token in lexema:
-#    print(token.type, token.value, token.lineno, #token.lexpos)
+#    print(token.type, token.value, token.lineno, token.lexpos)
