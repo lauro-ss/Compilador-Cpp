@@ -1,56 +1,22 @@
-program -> cpp$
-cpp -> decl_classe 
-     | decl_funcao 
-     | decl_variavel
-     | decl_classe  cpp
-     | decl_funcao  cpp
-     | decl_variavel cpp
-decl_classe -> CLASS ID body_class;
-decl_funcao -> tipo ID(parametros) body
-             | tipo ID(parametros) body decl_funcao
-parametros -> ID ID
-            | ID ID , parametros
-body_class -> { PUBLIC: decl_variavel } 
-            | { PUBLIC: decl_funcao }
-body -> { comandos }
-comandos -> | decl_variavel
-            | decl_variavel comandos
-            | WHILE(exp) body
-            | WHILE(exp) body comandos
-
-decl_variavel ->  tipo ID; 
-              | tipo ID = exp;
-              | tipo ID; decl_variavel
-              | tipo ID = exp; decl_variavel
-
-tipo -> INT | BOOL | ID
-
-exp -> exp + exp_2 | exp - exp_2
-exp_1 -> exp * exp_3 | exp / exp_2
-exp_
-
-
-using namespace id GLOBAL | INCLUDE GLOBAL
-INCLUDE -> #include <id> INCLUDE | #include <id>
-GLOBAL -> TYPE id GLOBAL FUNC | TYPE id EXP GLOBAL FUNC | FUNC
-FUNC -> TYPE id(PARAM){ EXP } | TYPE id( ){ EXP }
-PARAM -> TYPE id, PARAM | TYPE id
-EXP -> SUM EXP| SUB EXP | MULT EXP | DIV EXP | SUM | SUB | MULT | DIV 
-SUM -> exp + exp SUM | id + id
-SUB -> id - id SUB | id - id
-MULT -> id * id MULT | id * id
-DIV ->  id / id DIV | id / id
-TYPE -> int | boolean
-
-type id  | id
-
-fulaninho -> type id
-              | id
 
 
 
-exp -> exp + exp1 | exp1 
 
-exp1 -> exp1 - exp2
 
-| NUM | ID  | call  
+-- conflit 1
+
+def p_condicional_1(p):
+    '''condicional_1 : IF PARENT_ABRE exp PARENT_FECHA body ELSE body
+                   | IF PARENT_ABRE exp PARENT_FECHA body
+                   | exp PONTO_VIRG 
+                   | decl_variavel
+                   | WHILE PARENT_ABRE exp PARENT_FECHA body
+                   | FOR PARENT_ABRE for_log PARENT_FECHA body
+                   | RETURN exp PONTO_VIRG
+                   | RETURN PONTO_VIRG
+                   | IF PARENT_ABRE exp PARENT_FECHA condicional_1 ELSE condicional_1'''
+
+
+def p_condicional_2(p):
+    '''condicional_2 : IF PARENT_ABRE exp PARENT_FECHA comando
+                   | IF PARENT_ABRE exp PARENT_FECHA condicional_1 ELSE body condicional_2'''

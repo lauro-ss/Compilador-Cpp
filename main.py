@@ -7,23 +7,39 @@ e = '''int main(){
                   if(2 > 3){
                     int a;
                    } 
-                  int b; 
+                  int b, a, c, d, e; 
                   int c; 
-                  return 0;
+                  return c;
+}'''
+
+d = '''
+void main(){
+  if(2 + 2){
+    if(2+2)
+      a = "2";
+  }else{
+    while(true){
+      if(2 + 2)
+        teste = 222;
+    }
+  }
 }'''
 
 cl = '''
-class skullmonkey{
+class teste{
           public:
-          int teste(){
-              typedef int inteiro,eu,tu;
+          void carro(){
+              return 2;
+          }
+          string ttt(int c){
+            return c;
           }
 };
 '''
 
-lexema.input(cl)
+lexema.input(d)
 parser = yacc.yacc()
-#parser.parse(debug=True)
-parser.parse(debug=False)
+parser.parse(debug=True)
+#parser.parse(debug=False)
 #for token in lexema:
 #    print(token.type, token.value, token.lineno, #token.lexpos)

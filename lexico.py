@@ -110,7 +110,7 @@ t_ignore = ' \t'
 def t_COMENTARIO(t):
   r'(/\*(.|\n)*?\*/)|(//.*)'
   #r'(/\*(.|\n)*?\*/)|(//.*)'
-  return t
+  pass
 
 
 def t_ID(t):
