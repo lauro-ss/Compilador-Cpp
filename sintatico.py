@@ -176,7 +176,7 @@ def p_condicional_1(p):
 
 def p_condicional_2(p):
     '''condicional_2 : IF PARENT_ABRE exp PARENT_FECHA body
-                     | IF PARENT_ABRE exp PARENT_FECHA condicional_1'''
+                     | IF PARENT_ABRE exp PARENT_FECHA comando'''
 
 def p_rest_if(p):
     '''rest_if : condicional_1 ELSE condicional_1

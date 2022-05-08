@@ -104,7 +104,7 @@ Rule 82    condicional_1 -> FOR PARENT_ABRE for_log PARENT_FECHA body
 Rule 83    condicional_1 -> RETURN exp PONTO_VIRG
 Rule 84    condicional_1 -> RETURN PONTO_VIRG
 Rule 85    condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA body
-Rule 86    condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1
+Rule 86    condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando
 Rule 87    rest_if -> condicional_1 ELSE condicional_1
 Rule 88    rest_if -> condicional_1 ELSE body
 Rule 89    rest_if -> body ELSE body
@@ -191,9 +191,9 @@ Nonterminals, with rules where they appear
 body                 : 13 14 15 16 17 18 81 82 85 88 89 89 90
 body_class           : 7
 chamada_funcao       : 72
-comando              : 32 33
+comando              : 32 33 86
 comandos             : 30 33
-condicional_1        : 34 86 87 87 88 90
+condicional_1        : 34 87 87 88 90
 condicional_2        : 35
 content_class        : 8 9 10
 cpp                  : 4 5 6 0
@@ -1540,7 +1540,7 @@ state 67
     (83) condicional_1 -> . RETURN exp PONTO_VIRG
     (84) condicional_1 -> . RETURN PONTO_VIRG
     (85) condicional_2 -> . IF PARENT_ABRE exp PARENT_FECHA body
-    (86) condicional_2 -> . IF PARENT_ABRE exp PARENT_FECHA condicional_1
+    (86) condicional_2 -> . IF PARENT_ABRE exp PARENT_FECHA comando
     (36) exp -> . exp RECEBER exp_1
     (37) exp -> . exp_1
     (21) decl_variavel -> . tipo ID PONTO_VIRG
@@ -3096,7 +3096,7 @@ state 110
     (83) condicional_1 -> . RETURN exp PONTO_VIRG
     (84) condicional_1 -> . RETURN PONTO_VIRG
     (85) condicional_2 -> . IF PARENT_ABRE exp PARENT_FECHA body
-    (86) condicional_2 -> . IF PARENT_ABRE exp PARENT_FECHA condicional_1
+    (86) condicional_2 -> . IF PARENT_ABRE exp PARENT_FECHA comando
     (36) exp -> . exp RECEBER exp_1
     (37) exp -> . exp_1
     (21) decl_variavel -> . tipo ID PONTO_VIRG
@@ -3239,7 +3239,7 @@ state 113
 
     (78) condicional_1 -> IF . PARENT_ABRE exp PARENT_FECHA rest_if
     (85) condicional_2 -> IF . PARENT_ABRE exp PARENT_FECHA body
-    (86) condicional_2 -> IF . PARENT_ABRE exp PARENT_FECHA condicional_1
+    (86) condicional_2 -> IF . PARENT_ABRE exp PARENT_FECHA comando
 
     PARENT_ABRE     shift and go to state 157
 
@@ -4108,7 +4108,7 @@ state 157
 
     (78) condicional_1 -> IF PARENT_ABRE . exp PARENT_FECHA rest_if
     (85) condicional_2 -> IF PARENT_ABRE . exp PARENT_FECHA body
-    (86) condicional_2 -> IF PARENT_ABRE . exp PARENT_FECHA condicional_1
+    (86) condicional_2 -> IF PARENT_ABRE . exp PARENT_FECHA comando
     (36) exp -> . exp RECEBER exp_1
     (37) exp -> . exp_1
     (38) exp_1 -> . exp_1 OP_OU exp_2
@@ -4470,7 +4470,7 @@ state 168
 
     (78) condicional_1 -> IF PARENT_ABRE exp . PARENT_FECHA rest_if
     (85) condicional_2 -> IF PARENT_ABRE exp . PARENT_FECHA body
-    (86) condicional_2 -> IF PARENT_ABRE exp . PARENT_FECHA condicional_1
+    (86) condicional_2 -> IF PARENT_ABRE exp . PARENT_FECHA comando
     (36) exp -> exp . RECEBER exp_1
 
     PARENT_FECHA    shift and go to state 174
@@ -4668,13 +4668,15 @@ state 174
 
     (78) condicional_1 -> IF PARENT_ABRE exp PARENT_FECHA . rest_if
     (85) condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA . body
-    (86) condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA . condicional_1
+    (86) condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA . comando
     (87) rest_if -> . condicional_1 ELSE condicional_1
     (88) rest_if -> . condicional_1 ELSE body
     (89) rest_if -> . body ELSE body
     (90) rest_if -> . body ELSE condicional_1
     (30) body -> . CHAVE_ABRE comandos CHAVE_FECHA
     (31) body -> . CHAVE_ABRE CHAVE_FECHA
+    (34) comando -> . condicional_1
+    (35) comando -> . condicional_2
     (78) condicional_1 -> . IF PARENT_ABRE exp PARENT_FECHA rest_if
     (79) condicional_1 -> . exp PONTO_VIRG
     (80) condicional_1 -> . decl_variavel
@@ -4682,6 +4684,8 @@ state 174
     (82) condicional_1 -> . FOR PARENT_ABRE for_log PARENT_FECHA body
     (83) condicional_1 -> . RETURN exp PONTO_VIRG
     (84) condicional_1 -> . RETURN PONTO_VIRG
+    (85) condicional_2 -> . IF PARENT_ABRE exp PARENT_FECHA body
+    (86) condicional_2 -> . IF PARENT_ABRE exp PARENT_FECHA comando
     (36) exp -> . exp RECEBER exp_1
     (37) exp -> . exp_1
     (21) decl_variavel -> . tipo ID PONTO_VIRG
@@ -4736,7 +4740,7 @@ state 174
     (77) chamada_funcao -> . TYPEID PARENT_ABRE exp PARENT_FECHA
 
     CHAVE_ABRE      shift and go to state 67
-    IF              shift and go to state 181
+    IF              shift and go to state 113
     WHILE           shift and go to state 116
     FOR             shift and go to state 117
     RETURN          shift and go to state 118
@@ -4755,9 +4759,11 @@ state 174
     TYPEID          shift and go to state 55
 
     exp                            shift and go to state 114
-    rest_if                        shift and go to state 182
-    body                           shift and go to state 183
+    rest_if                        shift and go to state 181
+    body                           shift and go to state 182
+    comando                        shift and go to state 183
     condicional_1                  shift and go to state 184
+    condicional_2                  shift and go to state 112
     decl_variavel                  shift and go to state 115
     exp_1                          shift and go to state 37
     tipo                           shift and go to state 119
@@ -4955,13 +4961,6 @@ state 180
 
 state 181
 
-    (78) condicional_1 -> IF . PARENT_ABRE exp PARENT_FECHA rest_if
-
-    PARENT_ABRE     shift and go to state 191
-
-
-state 182
-
     (78) condicional_1 -> IF PARENT_ABRE exp PARENT_FECHA rest_if .
 
     IF              reduce using rule 78 (condicional_1 -> IF PARENT_ABRE exp PARENT_FECHA rest_if .)
@@ -4985,7 +4984,7 @@ state 182
     ELSE            reduce using rule 78 (condicional_1 -> IF PARENT_ABRE exp PARENT_FECHA rest_if .)
 
 
-state 183
+state 182
 
     (85) condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA body .
     (89) rest_if -> body . ELSE body
@@ -5009,34 +5008,58 @@ state 183
     PARENT_ABRE     reduce using rule 85 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA body .)
     TYPEID          reduce using rule 85 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA body .)
     CHAVE_FECHA     reduce using rule 85 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA body .)
-    ELSE            shift and go to state 192
+    ELSE            shift and go to state 191
+
+
+state 183
+
+    (86) condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .
+
+    IF              reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    WHILE           reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    FOR             reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    RETURN          reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    TYPEDEF         reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    INT             reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    BOOL            reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    ID              reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    STRING          reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    OP_NOT          reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    NOT             reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    SIZEOF          reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    INT_V           reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    TRUE            reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    FALSE           reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    PARENT_ABRE     reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    TYPEID          reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
+    CHAVE_FECHA     reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA comando .)
 
 
 state 184
 
-    (86) condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .
     (87) rest_if -> condicional_1 . ELSE condicional_1
     (88) rest_if -> condicional_1 . ELSE body
+    (34) comando -> condicional_1 .
 
-    IF              reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    WHILE           reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    FOR             reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    RETURN          reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    TYPEDEF         reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    INT             reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    BOOL            reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    ID              reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    STRING          reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    OP_NOT          reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    NOT             reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    SIZEOF          reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    INT_V           reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    TRUE            reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    FALSE           reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    PARENT_ABRE     reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    TYPEID          reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    CHAVE_FECHA     reduce using rule 86 (condicional_2 -> IF PARENT_ABRE exp PARENT_FECHA condicional_1 .)
-    ELSE            shift and go to state 193
+    ELSE            shift and go to state 192
+    IF              reduce using rule 34 (comando -> condicional_1 .)
+    WHILE           reduce using rule 34 (comando -> condicional_1 .)
+    FOR             reduce using rule 34 (comando -> condicional_1 .)
+    RETURN          reduce using rule 34 (comando -> condicional_1 .)
+    TYPEDEF         reduce using rule 34 (comando -> condicional_1 .)
+    INT             reduce using rule 34 (comando -> condicional_1 .)
+    BOOL            reduce using rule 34 (comando -> condicional_1 .)
+    ID              reduce using rule 34 (comando -> condicional_1 .)
+    STRING          reduce using rule 34 (comando -> condicional_1 .)
+    OP_NOT          reduce using rule 34 (comando -> condicional_1 .)
+    NOT             reduce using rule 34 (comando -> condicional_1 .)
+    SIZEOF          reduce using rule 34 (comando -> condicional_1 .)
+    INT_V           reduce using rule 34 (comando -> condicional_1 .)
+    TRUE            reduce using rule 34 (comando -> condicional_1 .)
+    FALSE           reduce using rule 34 (comando -> condicional_1 .)
+    PARENT_ABRE     reduce using rule 34 (comando -> condicional_1 .)
+    TYPEID          reduce using rule 34 (comando -> condicional_1 .)
+    CHAVE_FECHA     reduce using rule 34 (comando -> condicional_1 .)
 
 
 state 185
@@ -5157,7 +5180,7 @@ state 188
     PARENT_ABRE     shift and go to state 49
     TYPEID          shift and go to state 55
 
-    exp                            shift and go to state 194
+    exp                            shift and go to state 193
     exp_1                          shift and go to state 37
     exp_2                          shift and go to state 38
     exp_3                          shift and go to state 39
@@ -5237,7 +5260,7 @@ state 190
     PARENT_ABRE     shift and go to state 49
     TYPEID          shift and go to state 55
 
-    exp                            shift and go to state 195
+    exp                            shift and go to state 194
     exp_1                          shift and go to state 37
     exp_2                          shift and go to state 38
     exp_3                          shift and go to state 39
@@ -5250,75 +5273,6 @@ state 190
     chamada_funcao                 shift and go to state 53
 
 state 191
-
-    (78) condicional_1 -> IF PARENT_ABRE . exp PARENT_FECHA rest_if
-    (36) exp -> . exp RECEBER exp_1
-    (37) exp -> . exp_1
-    (38) exp_1 -> . exp_1 OP_OU exp_2
-    (39) exp_1 -> . exp_1 OR exp_2
-    (40) exp_1 -> . exp_2
-    (41) exp_2 -> . exp_2 OP_E exp_3
-    (42) exp_2 -> . exp_2 AND exp_3
-    (43) exp_2 -> . exp_3
-    (44) exp_3 -> . exp_3 OP_OU_EX exp_4
-    (45) exp_3 -> . exp_3 XOR exp_4
-    (46) exp_3 -> . exp_4
-    (47) exp_4 -> . exp_4 IGUAL exp_5
-    (48) exp_4 -> . exp_4 DIFERENTE exp_5
-    (49) exp_4 -> . exp_5
-    (50) exp_5 -> . exp_5 MENOR_Q exp_6
-    (51) exp_5 -> . exp_5 MAIOR_Q exp_6
-    (52) exp_5 -> . exp_5 MAIOR_IGUAL exp_6
-    (53) exp_5 -> . exp_5 MENOR_IGUAL exp_6
-    (54) exp_5 -> . exp_6
-    (55) exp_6 -> . exp_6 SOMA exp_7
-    (56) exp_6 -> . exp_6 SUB exp_7
-    (57) exp_6 -> . exp_7
-    (58) exp_7 -> . exp_7 MULT exp_8
-    (59) exp_7 -> . exp_7 DIV exp_8
-    (60) exp_7 -> . exp_7 MODULO exp_8
-    (61) exp_7 -> . exp_8
-    (62) exp_8 -> . OP_NOT exp_9
-    (63) exp_8 -> . NOT exp_9
-    (64) exp_8 -> . exp_9 MAIS_MAIS
-    (65) exp_8 -> . exp_9 MENOS_MENOS
-    (66) exp_8 -> . SIZEOF PARENT_ABRE exp_9 PARENT_FECHA
-    (67) exp_8 -> . exp_9
-    (68) exp_9 -> . ID
-    (69) exp_9 -> . INT_V
-    (70) exp_9 -> . TRUE
-    (71) exp_9 -> . FALSE
-    (72) exp_9 -> . chamada_funcao
-    (73) exp_9 -> . STRING
-    (74) exp_9 -> . PARENT_ABRE exp PARENT_FECHA
-    (75) chamada_funcao -> . ID PARENT_ABRE parametros PARENT_FECHA
-    (76) chamada_funcao -> . ID PARENT_ABRE PARENT_FECHA
-    (77) chamada_funcao -> . TYPEID PARENT_ABRE exp PARENT_FECHA
-
-    OP_NOT          shift and go to state 45
-    NOT             shift and go to state 47
-    SIZEOF          shift and go to state 48
-    ID              shift and go to state 35
-    INT_V           shift and go to state 50
-    TRUE            shift and go to state 51
-    FALSE           shift and go to state 52
-    STRING          shift and go to state 54
-    PARENT_ABRE     shift and go to state 49
-    TYPEID          shift and go to state 55
-
-    exp                            shift and go to state 196
-    exp_1                          shift and go to state 37
-    exp_2                          shift and go to state 38
-    exp_3                          shift and go to state 39
-    exp_4                          shift and go to state 40
-    exp_5                          shift and go to state 41
-    exp_6                          shift and go to state 42
-    exp_7                          shift and go to state 43
-    exp_8                          shift and go to state 44
-    exp_9                          shift and go to state 46
-    chamada_funcao                 shift and go to state 53
-
-state 192
 
     (89) rest_if -> body ELSE . body
     (90) rest_if -> body ELSE . condicional_1
@@ -5385,7 +5339,7 @@ state 192
     (77) chamada_funcao -> . TYPEID PARENT_ABRE exp PARENT_FECHA
 
     CHAVE_ABRE      shift and go to state 67
-    IF              shift and go to state 181
+    IF              shift and go to state 197
     WHILE           shift and go to state 116
     FOR             shift and go to state 117
     RETURN          shift and go to state 118
@@ -5403,8 +5357,8 @@ state 192
     PARENT_ABRE     shift and go to state 49
     TYPEID          shift and go to state 55
 
-    body                           shift and go to state 197
-    condicional_1                  shift and go to state 198
+    body                           shift and go to state 195
+    condicional_1                  shift and go to state 196
     exp                            shift and go to state 114
     decl_variavel                  shift and go to state 115
     exp_1                          shift and go to state 37
@@ -5419,7 +5373,7 @@ state 192
     exp_9                          shift and go to state 46
     chamada_funcao                 shift and go to state 53
 
-state 193
+state 192
 
     (87) rest_if -> condicional_1 ELSE . condicional_1
     (88) rest_if -> condicional_1 ELSE . body
@@ -5485,7 +5439,7 @@ state 193
     (76) chamada_funcao -> . ID PARENT_ABRE PARENT_FECHA
     (77) chamada_funcao -> . TYPEID PARENT_ABRE exp PARENT_FECHA
 
-    IF              shift and go to state 181
+    IF              shift and go to state 197
     WHILE           shift and go to state 116
     FOR             shift and go to state 117
     RETURN          shift and go to state 118
@@ -5504,8 +5458,8 @@ state 193
     PARENT_ABRE     shift and go to state 49
     TYPEID          shift and go to state 55
 
-    condicional_1                  shift and go to state 199
-    body                           shift and go to state 200
+    condicional_1                  shift and go to state 198
+    body                           shift and go to state 199
     exp                            shift and go to state 114
     decl_variavel                  shift and go to state 115
     exp_1                          shift and go to state 37
@@ -5520,7 +5474,7 @@ state 193
     exp_9                          shift and go to state 46
     chamada_funcao                 shift and go to state 53
 
-state 194
+state 193
 
     (93) for_log -> decl_variavel exp PONTO_VIRG exp .
     (36) exp -> exp . RECEBER exp_1
@@ -5529,7 +5483,7 @@ state 194
     RECEBER         shift and go to state 70
 
 
-state 195
+state 194
 
     (95) for_log -> PONTO_VIRG exp PONTO_VIRG exp .
     (36) exp -> exp . RECEBER exp_1
@@ -5538,16 +5492,7 @@ state 195
     RECEBER         shift and go to state 70
 
 
-state 196
-
-    (78) condicional_1 -> IF PARENT_ABRE exp . PARENT_FECHA rest_if
-    (36) exp -> exp . RECEBER exp_1
-
-    PARENT_FECHA    shift and go to state 201
-    RECEBER         shift and go to state 70
-
-
-state 197
+state 195
 
     (89) rest_if -> body ELSE body .
 
@@ -5572,7 +5517,7 @@ state 197
     ELSE            reduce using rule 89 (rest_if -> body ELSE body .)
 
 
-state 198
+state 196
 
     (90) rest_if -> body ELSE condicional_1 .
 
@@ -5597,7 +5542,14 @@ state 198
     ELSE            reduce using rule 90 (rest_if -> body ELSE condicional_1 .)
 
 
-state 199
+state 197
+
+    (78) condicional_1 -> IF . PARENT_ABRE exp PARENT_FECHA rest_if
+
+    PARENT_ABRE     shift and go to state 200
+
+
+state 198
 
     (87) rest_if -> condicional_1 ELSE condicional_1 .
 
@@ -5622,7 +5574,7 @@ state 199
     ELSE            reduce using rule 87 (rest_if -> condicional_1 ELSE condicional_1 .)
 
 
-state 200
+state 199
 
     (88) rest_if -> condicional_1 ELSE body .
 
@@ -5647,7 +5599,85 @@ state 200
     ELSE            reduce using rule 88 (rest_if -> condicional_1 ELSE body .)
 
 
+state 200
+
+    (78) condicional_1 -> IF PARENT_ABRE . exp PARENT_FECHA rest_if
+    (36) exp -> . exp RECEBER exp_1
+    (37) exp -> . exp_1
+    (38) exp_1 -> . exp_1 OP_OU exp_2
+    (39) exp_1 -> . exp_1 OR exp_2
+    (40) exp_1 -> . exp_2
+    (41) exp_2 -> . exp_2 OP_E exp_3
+    (42) exp_2 -> . exp_2 AND exp_3
+    (43) exp_2 -> . exp_3
+    (44) exp_3 -> . exp_3 OP_OU_EX exp_4
+    (45) exp_3 -> . exp_3 XOR exp_4
+    (46) exp_3 -> . exp_4
+    (47) exp_4 -> . exp_4 IGUAL exp_5
+    (48) exp_4 -> . exp_4 DIFERENTE exp_5
+    (49) exp_4 -> . exp_5
+    (50) exp_5 -> . exp_5 MENOR_Q exp_6
+    (51) exp_5 -> . exp_5 MAIOR_Q exp_6
+    (52) exp_5 -> . exp_5 MAIOR_IGUAL exp_6
+    (53) exp_5 -> . exp_5 MENOR_IGUAL exp_6
+    (54) exp_5 -> . exp_6
+    (55) exp_6 -> . exp_6 SOMA exp_7
+    (56) exp_6 -> . exp_6 SUB exp_7
+    (57) exp_6 -> . exp_7
+    (58) exp_7 -> . exp_7 MULT exp_8
+    (59) exp_7 -> . exp_7 DIV exp_8
+    (60) exp_7 -> . exp_7 MODULO exp_8
+    (61) exp_7 -> . exp_8
+    (62) exp_8 -> . OP_NOT exp_9
+    (63) exp_8 -> . NOT exp_9
+    (64) exp_8 -> . exp_9 MAIS_MAIS
+    (65) exp_8 -> . exp_9 MENOS_MENOS
+    (66) exp_8 -> . SIZEOF PARENT_ABRE exp_9 PARENT_FECHA
+    (67) exp_8 -> . exp_9
+    (68) exp_9 -> . ID
+    (69) exp_9 -> . INT_V
+    (70) exp_9 -> . TRUE
+    (71) exp_9 -> . FALSE
+    (72) exp_9 -> . chamada_funcao
+    (73) exp_9 -> . STRING
+    (74) exp_9 -> . PARENT_ABRE exp PARENT_FECHA
+    (75) chamada_funcao -> . ID PARENT_ABRE parametros PARENT_FECHA
+    (76) chamada_funcao -> . ID PARENT_ABRE PARENT_FECHA
+    (77) chamada_funcao -> . TYPEID PARENT_ABRE exp PARENT_FECHA
+
+    OP_NOT          shift and go to state 45
+    NOT             shift and go to state 47
+    SIZEOF          shift and go to state 48
+    ID              shift and go to state 35
+    INT_V           shift and go to state 50
+    TRUE            shift and go to state 51
+    FALSE           shift and go to state 52
+    STRING          shift and go to state 54
+    PARENT_ABRE     shift and go to state 49
+    TYPEID          shift and go to state 55
+
+    exp                            shift and go to state 201
+    exp_1                          shift and go to state 37
+    exp_2                          shift and go to state 38
+    exp_3                          shift and go to state 39
+    exp_4                          shift and go to state 40
+    exp_5                          shift and go to state 41
+    exp_6                          shift and go to state 42
+    exp_7                          shift and go to state 43
+    exp_8                          shift and go to state 44
+    exp_9                          shift and go to state 46
+    chamada_funcao                 shift and go to state 53
+
 state 201
+
+    (78) condicional_1 -> IF PARENT_ABRE exp . PARENT_FECHA rest_if
+    (36) exp -> exp . RECEBER exp_1
+
+    PARENT_FECHA    shift and go to state 202
+    RECEBER         shift and go to state 70
+
+
+state 202
 
     (78) condicional_1 -> IF PARENT_ABRE exp PARENT_FECHA . rest_if
     (87) rest_if -> . condicional_1 ELSE condicional_1
@@ -5716,7 +5746,7 @@ state 201
     (76) chamada_funcao -> . ID PARENT_ABRE PARENT_FECHA
     (77) chamada_funcao -> . TYPEID PARENT_ABRE exp PARENT_FECHA
 
-    IF              shift and go to state 181
+    IF              shift and go to state 197
     WHILE           shift and go to state 116
     FOR             shift and go to state 117
     RETURN          shift and go to state 118
@@ -5736,9 +5766,9 @@ state 201
     TYPEID          shift and go to state 55
 
     exp                            shift and go to state 114
-    rest_if                        shift and go to state 182
-    condicional_1                  shift and go to state 202
-    body                           shift and go to state 203
+    rest_if                        shift and go to state 181
+    condicional_1                  shift and go to state 203
+    body                           shift and go to state 204
     decl_variavel                  shift and go to state 115
     exp_1                          shift and go to state 37
     tipo                           shift and go to state 119
@@ -5752,18 +5782,18 @@ state 201
     exp_9                          shift and go to state 46
     chamada_funcao                 shift and go to state 53
 
-state 202
+state 203
 
     (87) rest_if -> condicional_1 . ELSE condicional_1
     (88) rest_if -> condicional_1 . ELSE body
 
-    ELSE            shift and go to state 193
+    ELSE            shift and go to state 192
 
 
-state 203
+state 204
 
     (89) rest_if -> body . ELSE body
     (90) rest_if -> body . ELSE condicional_1
 
-    ELSE            shift and go to state 192
+    ELSE            shift and go to state 191
 

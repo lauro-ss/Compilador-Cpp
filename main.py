@@ -15,14 +15,21 @@ e = '''int main(){
 d = '''
 void main(){
   if(2 + 2){
-    if(2+2)
+    if(2+2){
       a = "2";
-  }else{
-    while(true){
-      if(2 + 2)
-        teste = 222;
+      a = "2";
     }
-  }
+  }else{
+    if(2+2){
+      a = "2";
+    }
+  if(true)
+    if(true)
+      if(true)
+          a = 2;
+      else
+          a = 2;
+}
 }'''
 
 cl = '''
@@ -39,7 +46,7 @@ class teste{
 
 lexema.input(d)
 parser = yacc.yacc()
-parser.parse(debug=True)
-#parser.parse(debug=False)
+#parser.parse(debug=True)
+parser.parse(debug=False)
 #for token in lexema:
 #    print(token.type, token.value, token.lineno, #token.lexpos)
