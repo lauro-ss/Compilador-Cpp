@@ -3,10 +3,9 @@ import ply.lex as lex
 reserved = {
     'typedef': 'TYPEDEF',
     'using': 'USING',
-    'namespace': 'NAMESPACE',
     'sizeof': 'SIZEOF',
     'typeid': 'TYPEID',
-    'try': 'TRY',
+    #'try': 'TRY',
     #TIPOS
     'bool': 'BOOL',
     'int': 'INT',
@@ -21,8 +20,7 @@ reserved = {
     #Condicionais
     'if': 'IF',
     'else': 'ELSE',
-    #Funcoes/Structs
-    'struct': 'STRUCT',
+    #Funcoes
     'void': 'VOID',
     'return': 'RETURN',
     #Classes
@@ -59,25 +57,24 @@ tokens = [
     'STRING_V',
     'PARENT_ABRE',
     'PARENT_FECHA',
-    'COLCHETE_ABRE',
-    'COLCHETE_FECHA',
+    #'COLCHETE_ABRE',
+    #'COLCHETE_FECHA',
     'CHAVE_ABRE',
     'CHAVE_FECHA',
-    'COMENTARIO',
     'PONTO_VIRG',
     'VIRGULA',
-    'ENDERECO',
     'PONTO',
     'SETA',
     'DOIS_PONTOS',
     'MAIS_MAIS',
-    'MENOS_MENOS'
+    'MENOS_MENOS',
+    '2X_DOIS_PONTOS'
 ] + list(reserved.values())
 
 t_PARENT_ABRE = r'\('
 t_PARENT_FECHA = r'\)' 
-t_COLCHETE_ABRE = r'\['
-t_COLCHETE_FECHA = r'\]'
+#t_COLCHETE_ABRE = r'\['
+#t_COLCHETE_FECHA = r'\]'
 t_CHAVE_ABRE = r'{'
 t_CHAVE_FECHA = r'}'
 t_SOMA = r'\+'
@@ -95,7 +92,6 @@ t_OP_NOT = '!'
 t_MODULO = '%'
 t_STRING_V = '"(.|\n)*"'
 t_PONTO_VIRG = ';'
-t_ENDERECO = '&'
 t_IGUAL = '=='
 t_DIFERENTE = '!='
 t_RECEBER = '='
@@ -105,12 +101,12 @@ t_SETA = r'-\>'
 t_DOIS_PONTOS = r':'
 t_MAIS_MAIS = r'\+\+'
 t_MENOS_MENOS = r'\-\-'
+t_2X_DOIS_PONTOS = r'::'
 
 t_ignore = ' \t'
 
 def t_COMENTARIO(t):
   r'(/\*(.|\n)*?\*/)|(//.*)'
-  #r'(/\*(.|\n)*?\*/)|(//.*)'
   pass
 
 

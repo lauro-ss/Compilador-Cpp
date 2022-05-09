@@ -26,9 +26,13 @@ def p_cpp(p):
     '''cpp : decl_classe
          | decl_funcao
          | decl_variavel
+         | typedef
+         | using
          | decl_classe  cpp
          | decl_funcao  cpp
-         | decl_variavel cpp'''
+         | decl_variavel cpp
+         | typedef cpp
+         | using cpp'''
 
 
 def p_decl_classe(p):
@@ -40,10 +44,14 @@ def p_body_class(p):
 
 
 def p_content_class(p):
-    '''content_class : decl_variavel content_class
-                   | decl_funcao content_class
-                   | decl_variavel
-                   | decl_funcao'''
+    '''content_class : decl_variavel
+                     | decl_funcao
+                     | STATIC decl_variavel
+                     | STATIC decl_funcao
+                     | decl_variavel content_class
+                     | decl_funcao content_class
+                     | STATIC decl_variavel content_class
+                     | STATIC decl_funcao content_class'''
 
 
 def p_decl_funcao(p):
@@ -64,9 +72,7 @@ def p_decl_variavel(p):
     '''decl_variavel : tipo ID PONTO_VIRG 
                    | tipo ID RECEBER exp PONTO_VIRG
                    | tipo ID decl_variavel_n PONTO_VIRG 
-                   | tipo ID RECEBER exp decl_variavel_n PONTO_VIRG
-                   | TYPEDEF tipo ID PONTO_VIRG
-                   | TYPEDEF tipo ID decl_variavel_n'''
+                   | tipo ID RECEBER exp decl_variavel_n PONTO_VIRG'''
 
 
 def p_decl_variavel_n(p):
@@ -75,6 +81,17 @@ def p_decl_variavel_n(p):
                      | VIRGULA ID 
                      '''
 
+def p_typedef(p):
+    '''typedef : TYPEDEF tipo ID PONTO_VIRG
+               | TYPEDEF tipo ID decl_typedef_n PONTO_VIRG'''
+
+def p_decl_typedef_n(p):
+    '''decl_typedef_n : VIRGULA ID decl_typedef_n
+                      | VIRGULA ID'''
+
+def p_using(p):
+    '''using : USING ID 2X_DOIS_PONTOS ID PONTO_VIRG
+             | USING ID ID PONTO_VIRG'''
 
 def p_body(p):
     '''body : CHAVE_ABRE comandos CHAVE_FECHA
@@ -93,7 +110,7 @@ def p_comando(p):
 
 def p_exp(p):
     '''exp : exp RECEBER exp_1
-         | exp_1'''
+           | exp_1'''
 
 
 def p_exp_1(p):
@@ -147,16 +164,23 @@ def p_exp_8(p):
            | exp_9 MAIS_MAIS
            | exp_9 MENOS_MENOS
            | SIZEOF PARENT_ABRE exp_9 PARENT_FECHA
+           | NEW tipo PONTO_VIRG
            | exp_9'''
 
-
 def p_exp_9(p):
-    '''exp_9 : ID
+  '''exp_9 : exp_9 PONTO exp_10
+           | exp_9 SETA exp_10
+           | exp_10'''
+
+
+def p_exp_10(p):
+    '''exp_10 : ID
            | INT_V
            | TRUE
            | FALSE
            | chamada_funcao
            | STRING_V
+           | THIS
            | PARENT_ABRE exp PARENT_FECHA'''
 
 
@@ -169,6 +193,8 @@ def p_condicional_1(p):
     '''condicional_1 : IF PARENT_ABRE exp PARENT_FECHA rest_if
                      | exp PONTO_VIRG 
                      | decl_variavel
+                     | typedef
+                     | using
                      | WHILE PARENT_ABRE exp PARENT_FECHA body
                      | FOR PARENT_ABRE for_log PARENT_FECHA body
                      | RETURN exp PONTO_VIRG

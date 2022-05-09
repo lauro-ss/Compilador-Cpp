@@ -47,7 +47,17 @@ class teste{
 };
 '''
 
-lexema.input(d)
+teste = '''
+    using namespace std;
+    typedef int inteiro, realkkk;
+    typedef int inteiro, realkkk;
+    using teste::testado;
+int main (void){
+    typedef int inteiro, realkkk;
+    using teste::testado;
+}'''
+
+lexema.input(teste)
 parser = yacc.yacc()
 #parser.parse(debug=True)
 parser.parse(debug=False)
