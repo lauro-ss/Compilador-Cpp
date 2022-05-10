@@ -37,13 +37,7 @@ void main(){
 
 cl = '''
 class teste{
-          public:
-          void carro(){
-              return 2;
-          }
-          string ttt(int c){
-            return c;
-          }
+
 };
 '''
 
@@ -57,9 +51,10 @@ int main (void){
     using teste::testado;
 }'''
 
-lexema.input(teste)
+lexema.input(cl)
 parser = yacc.yacc()
 #parser.parse(debug=True)
-parser.parse(debug=False)
+result = parser.parse(debug=False)
+visitor = vis.Visitor()
 #for token in lexema:
 #    print(token.type, token.value, token.lineno, token.lexpos)

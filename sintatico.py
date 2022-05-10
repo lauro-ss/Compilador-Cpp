@@ -1,25 +1,7 @@
 import ply.yacc as yacc
 from lexico import *
-
-#program -> cpp$
-#cpp -> decl_classe
-#     | decl_funcao
-#     | decl_variavel
-#     | decl_classe  cpp
-#     | decl_funcao  cpp
-#     | decl_variavel cpp
-#decl_classe -> CLASS ID body;
-
-#decl_funcao -> tipo ID(parametros) body
-#parametros -> ID ID
-#            | ID ID , parametros
-#body -> { comandos }
-#comandos ->   decl_variavel
-#            | decl_variavel comandos
-#            | WHILE(exp) body
-#            | WHILE(exp) body comandos
-#decl_variavel ->  tipo ID; | tipo ID = exp;
-#tipo -> INT | BOOL | ID
+import sintaxe_abstrata as sa
+import Visitor as vis
 
 
 def p_cpp(p):
@@ -33,14 +15,23 @@ def p_cpp(p):
          | decl_variavel cpp
          | typedef cpp
          | using cpp'''
-
+    if(len(p) == 3):
+      p[0] = [p[1]] + p[2]
+    else:
+        p[0] = [p[1]]
+    
 
 def p_decl_classe(p):
     '''decl_classe : CLASS ID body_class PONTO_VIRG'''
+    #if(isinstance(p[3], sa.body_class)):
+    #  p[0] = sa.decl_classeConcrete(p[1],p[2],p[3])
+    #else:
+    p[0] = sa.decl_classeConcrete(p[1],p[2],None)
 
 
 def p_body_class(p):
-    '''body_class : CHAVE_ABRE PUBLIC DOIS_PONTOS content_class CHAVE_FECHA'''
+    '''body_class : CHAVE_ABRE PUBLIC DOIS_PONTOS content_class CHAVE_FECHA
+                  | CHAVE_ABRE CHAVE_FECHA'''
 
 
 def p_content_class(p):
@@ -197,6 +188,8 @@ def p_condicional_1(p):
                      | using
                      | WHILE PARENT_ABRE exp PARENT_FECHA body
                      | FOR PARENT_ABRE for_log PARENT_FECHA body
+                     | WHILE PARENT_ABRE exp PARENT_FECHA condicional_1
+                     | FOR PARENT_ABRE for_log PARENT_FECHA condicional_1
                      | RETURN exp PONTO_VIRG
                      | RETURN PONTO_VIRG'''
 
