@@ -16,22 +16,23 @@ def p_cpp(p):
          | typedef cpp
          | using cpp'''
     if(len(p) == 3):
-      p[0] = [p[1]] + p[2]
+      p[0] = sa.cppConcrete(p[1],p[2])
     else:
-        p[0] = [p[1]]
+      p[0] = sa.cppConcrete(p[1],None)
     
 
 def p_decl_classe(p):
     '''decl_classe : CLASS ID body_class PONTO_VIRG'''
-    #if(isinstance(p[3], sa.body_class)):
-    #  p[0] = sa.decl_classeConcrete(p[1],p[2],p[3])
-    #else:
-    p[0] = sa.decl_classeConcrete(p[1],p[2],None)
+    p[0] = sa.decl_classeConcrete(p[1],p[2],p[3])
 
 
 def p_body_class(p):
     '''body_class : CHAVE_ABRE PUBLIC DOIS_PONTOS content_class CHAVE_FECHA
                   | CHAVE_ABRE CHAVE_FECHA'''
+    if(len(p) > 3):
+      p[0] = sa.body_classConcrete(p[2],p[4])
+    else:
+      p[0] = sa.body_classConcrete(None,None)
 
 
 def p_content_class(p):
@@ -43,6 +44,14 @@ def p_content_class(p):
                      | decl_funcao content_class
                      | STATIC decl_variavel content_class
                      | STATIC decl_funcao content_class'''
+    if(len(p) == 4):
+      p[0] = sa.content_classConcrete(p[1],p[2],p[3])
+    elif(len(p) == 3 and p[1] == "STATIC"):
+      p[0] = sa.content_classConcrete(p[1],p[2],None)
+    elif(len(p) == 3):
+      p[0] = sa.content_classConcrete(None,p[1],p[2])
+    else:
+      p[0] = sa.content_classConcrete(None,p[1],None)
 
 
 def p_decl_funcao(p):
@@ -52,6 +61,10 @@ def p_decl_funcao(p):
                  | VOID ID PARENT_ABRE parametros PARENT_FECHA body
                  | VOID ID PARENT_ABRE PARENT_FECHA body
                  | VOID ID PARENT_ABRE VOID PARENT_FECHA body'''
+    if(len(p) == 7):
+      p[0] = sa.decl_funcaoConcrete(p[1],p[2],p[4],p[5])
+    else:
+      p[0] = sa.decl_funcaoConcrete(p[1],p[2],None,p[5])
 
 
 def p_parametros(p):

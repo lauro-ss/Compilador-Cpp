@@ -37,9 +37,17 @@ void main(){
 
 cl = '''
 class teste{
-
+  public:
+      int a;
+      int a;
 };
 '''
+ttt = '''
+void main(int n){
+
+}
+'''
+
 
 teste = '''
     using namespace std;

@@ -9,7 +9,11 @@ def blank():
     return p
 
 class Visitor(visitor_abstract):
-
+  
+    def visit_cppConcrete(self, cppConcrete):
+       cppConcrete.decl.accept(self)
+       cppConcrete.recursao.accept(self)
+    
     def visit_decl_classeConcrete(self, decl_classeConcrete):
        print(blank(), decl_classeConcrete.Class,' ' ,decl_classeConcrete.id, '{', end='', sep='')
        decl_classeConcrete.Class.accept(self)
@@ -17,3 +21,6 @@ class Visitor(visitor_abstract):
        if(decl_classeConcrete.body_class):
           decl_classeConcrete.body_class.accept(self)
        print('}',';', end='', sep='')
+
+    def visit_body_classConcrete(self, body_classConcrete):
+       pass
