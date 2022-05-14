@@ -46,7 +46,7 @@ def p_content_class(p):
                      | STATIC decl_funcao content_class'''
     if(len(p) == 4):
       p[0] = sa.content_classConcrete(p[1],p[2],p[3])
-    elif(len(p) == 3 and p[1] == "STATIC"):
+    elif(len(p) == 3 and p[1] == "static"):
       p[0] = sa.content_classConcrete(p[1],p[2],None)
     elif(len(p) == 3):
       p[0] = sa.content_classConcrete(None,p[1],p[2])
@@ -62,14 +62,18 @@ def p_decl_funcao(p):
                  | VOID ID PARENT_ABRE PARENT_FECHA body
                  | VOID ID PARENT_ABRE VOID PARENT_FECHA body'''
     if(len(p) == 7):
-      p[0] = sa.decl_funcaoConcrete(p[1],p[2],p[4],p[5])
-    else:
+      p[0] = sa.decl_funcaoConcrete(p[1],p[2],p[4],p[6])
+    if(len(p) == 6):
       p[0] = sa.decl_funcaoConcrete(p[1],p[2],None,p[5])
 
 
 def p_parametros(p):
     '''parametros : tipo ID
                 | tipo ID VIRGULA parametros'''
+    if(len(p) == 5):
+      p[0] = sa.parametrosConcrete(p[1],p[2],p[4])
+    else:
+      p[0] = sa.parametrosConcrete(p[1],p[2],None)
 
 
 def p_decl_variavel(p):
@@ -77,6 +81,14 @@ def p_decl_variavel(p):
                    | tipo ID RECEBER exp PONTO_VIRG
                    | tipo ID decl_variavel_n PONTO_VIRG 
                    | tipo ID RECEBER exp decl_variavel_n PONTO_VIRG'''
+    if(len(p) == 7):
+      p[0] = sa.decl_variavelConcrete(p[1],p[2],p[4],p[5])
+    if(len(p) == 6):
+       p[0] = sa.decl_variavelConcrete(p[1],p[2],p[4],None)
+    if(len(p) == 5):
+       p[0] = sa.decl_variavelConcrete(p[1],p[2],None,p[3])
+    else:
+       p[0] = sa.decl_variavelConcrete(p[1],p[2],None,None)
 
 
 def p_decl_variavel_n(p):
@@ -100,6 +112,8 @@ def p_using(p):
 def p_body(p):
     '''body : CHAVE_ABRE comandos CHAVE_FECHA
             | CHAVE_ABRE CHAVE_FECHA'''
+    if(len(p) == 4):
+      p[0] = sa.bodyConcrete(p[2])
 
 
 def p_comandos(p):
@@ -209,7 +223,8 @@ def p_condicional_1(p):
 def p_condicional_2(p):
     '''condicional_2 : IF PARENT_ABRE exp PARENT_FECHA body
                      | IF PARENT_ABRE exp PARENT_FECHA comando
-                     | IF PARENT_ABRE exp PARENT_FECHA condicional_1 ELSE condicional_2'''
+                     | IF PARENT_ABRE exp PARENT_FECHA condicional_1 ELSE condicional_2
+                     | IF PARENT_ABRE exp PARENT_FECHA body ELSE condicional_2'''
 
 def p_rest_if(p):
     '''rest_if : condicional_1 ELSE condicional_1
@@ -234,6 +249,7 @@ def p_tipo(p):
           | BOOL 
           | ID
           | STRING'''
+    p[0] = sa.tipoConcrete(p[1])
 
 
 def p_error(p):

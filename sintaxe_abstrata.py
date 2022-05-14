@@ -8,9 +8,9 @@ class cpp(metaclass=ABCMeta):
     pass
 
 class cppConcrete(cpp):
-  def __init__(self, decl, recursao):
+  def __init__(self, decl, cpp):
     self.decl = decl
-    self.recursao = recursao
+    self.cpp = cpp
     
   def accept(self, visitor):
     return visitor.visit_cppConcrete(self)
@@ -58,13 +58,13 @@ class content_class(metaclass=ABCMeta):
         pass
 
 class content_classConcrete(content_class):
-    def __init__(self, static, decl, recursao):
+    def __init__(self, static, decl, content_class):
       self.static = static
       self.decl = decl
-      self.recursao = recursao
+      self.content_class = content_class
     
     def accept(self, visitor):
-      return visitor.visit_decl_classeConcrete(self)
+      return visitor.visit_content_classConcrete(self)
         
 ###
 ###
@@ -92,8 +92,10 @@ class parametros(metaclass=ABCMeta):
         pass
 
 class parametrosConcrete(parametros):
-    def __init__():
-      ''''''
+    def __init__(self, tipo, id, parametros):
+      self.tipo = tipo
+      self.id = id
+      self.parametros = parametros
     def accept(self, visitor):
       return visitor.visit_parametrosConcrete(self)
 ###
@@ -105,8 +107,12 @@ class decl_variavel(metaclass=ABCMeta):
         pass
 
 class decl_variavelConcrete(decl_variavel):
-    def __init__():
-      ''''''
+    def __init__(self, tipo, id, exp, decl_variavel_n):
+      self.tipo = tipo
+      self.id = id
+      self.exp = exp
+      self.decl_variavel_n = decl_variavel_n
+      
     def accept(self, visitor):
       return visitor.visit_decl_variavelConcrete(self)
 ###
@@ -170,8 +176,9 @@ class body(metaclass=ABCMeta):
         pass
 
 class bodyConcrete(body):
-    def __init__():
-      ''''''
+    def __init__(self, comandos):
+      self.comandos = comandos
+      
     def accept(self, visitor):
       return visitor.visit_bodyConcrete(self)
 ###
@@ -417,7 +424,7 @@ class tipo(metaclass=ABCMeta):
         pass
 
 class tipoConcrete(tipo):
-    def __init__():
-      ''''''
+    def __init__(self, tipo_v):
+      self.tipo_v = tipo_v
     def accept(self, visitor):
       return visitor.visit_tipoConcrete(self)

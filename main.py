@@ -24,6 +24,8 @@ void main(){
     if(2+2){
       a = "2";
     }
+  if (true) {} else if (true) {}
+
   if(true)
     if(true)
       if(true)
@@ -37,9 +39,11 @@ void main(){
 
 cl = '''
 class teste{
-  public:
+    public:
       int a;
-      int a;
+      static void teste(int a, string b, bool c, tipo d){
+        int a;
+      }
 };
 '''
 ttt = '''
@@ -64,5 +68,6 @@ parser = yacc.yacc()
 #parser.parse(debug=True)
 result = parser.parse(debug=False)
 visitor = vis.Visitor()
+result.accept(visitor)
 #for token in lexema:
 #    print(token.type, token.value, token.lineno, token.lexpos)
