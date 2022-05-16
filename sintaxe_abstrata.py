@@ -124,8 +124,11 @@ class decl_variavel_n(metaclass=ABCMeta):
         pass
       
 class decl_variavel_nConcrete(decl_variavel_n):
-    def __init__():
-      ''''''
+    def __init__(self, id, exp, decl_variavel_n):
+      self.id = id
+      self.exp = exp
+      self.decl_variavel_n = decl_variavel_n
+      
     def accept(self, visitor):
       return visitor.visit_decl_variavel_nConcrete(self)
 ###
@@ -216,8 +219,10 @@ class exp(metaclass=ABCMeta):
         pass
 
 class expConcrete(exp):
-    def __init__():
-      ''''''
+    def __init__(self, exp, exp_1):
+      self.exp = exp
+      self.exp_1 = exp_1
+      
     def accept(self, visitor):
       return visitor.visit_expConcrete(self)
 ###
@@ -229,10 +234,13 @@ class exp_1(metaclass=ABCMeta):
         pass
 
 class exp_1Concrete(exp_1):
-    def __init__():
-      ''''''
+    def __init__(self, exp_1, exp_2):
+      self.exp_1 = exp_1
+      self.exp_2 = exp_2
+      
     def accept(self, visitor):
       return visitor.visit_exp_1Concrete(self)
+      
 ###
 ###
 
@@ -242,8 +250,10 @@ class exp_2(metaclass=ABCMeta):
         pass
 
 class exp_2Concrete(exp_2):
-    def __init__():
-      ''''''
+    def __init__(self, exp_2, exp_3):
+      self.exp_2 = exp_2
+      self.exp_3 = exp_3
+      
     def accept(self, visitor):
       return visitor.visit_exp_2Concrete(self)
 ###
@@ -255,8 +265,9 @@ class exp_3(metaclass=ABCMeta):
         pass
 
 class exp_3Concrete(exp_3):
-    def __init__():
-      ''''''
+    def __init__(self, exp_3, exp_4):
+      self.exp_3 = exp_3
+      self.exp_4 = exp_4
     def accept(self, visitor):
       return visitor.visit_exp_3Concrete(self)
 ###
@@ -268,8 +279,9 @@ class exp_4(metaclass=ABCMeta):
         pass
 
 class exp_4Concrete(exp_4):
-    def __init__():
-      ''''''
+    def __init__(self, exp_4, exp_5):
+      self.exp_4 = exp_4
+      self.exp_5 = exp_5
     def accept(self, visitor):
       return visitor.visit_exp_4Concrete(self)
 ###
@@ -281,8 +293,9 @@ class exp_5(metaclass=ABCMeta):
         pass
 
 class exp_5Concrete(exp_5):
-    def __init__():
-      ''''''
+    def __init__(self, exp_5, exp_6):
+      self.exp_5 = exp_5
+      self.exp_6 = exp_6
     def accept(self, visitor):
       return visitor.visit_exp_5Concrete(self)
 ###
@@ -294,8 +307,9 @@ class exp_6(metaclass=ABCMeta):
         pass
 
 class exp_6Concrete(exp_6):
-    def __init__():
-      ''''''
+    def __init__(self, exp_6, exp_7):
+      self.exp_6 = exp_6
+      self.exp_7 = exp_7
     def accept(self, visitor):
       return visitor.visit_exp_6Concrete(self)
 ###
@@ -307,8 +321,9 @@ class exp_7(metaclass=ABCMeta):
         pass
 
 class exp_7Concrete(exp_7):
-    def __init__():
-      ''''''
+    def __init__(self, exp_7, exp_8):
+      self.exp_7 = exp_7
+      self.exp_8 = exp_8
     def accept(self, visitor):
       return visitor.visit_exp_7Concrete(self)
 ###
@@ -320,8 +335,8 @@ class exp_8(metaclass=ABCMeta):
         pass
 
 class exp_8Concrete(exp_8):
-    def __init__():
-      ''''''
+    def __init__(self, exp_9):
+      self.exp_9 = exp_9
     def accept(self, visitor):
       return visitor.visit_exp_8Concrete(self)
 ###
@@ -333,8 +348,9 @@ class exp_9(metaclass=ABCMeta):
         pass
 
 class exp_9Concrete(exp_9):
-    def __init__():
-      ''''''
+    def __init__(self, exp_9, exp_10):
+      self.exp_9 = exp_9
+      self.exp_10 = exp_10
     def accept(self, visitor):
       return visitor.visit_exp_9Concrete(self)
 ###
@@ -346,8 +362,8 @@ class exp_10(metaclass=ABCMeta):
         pass
 
 class exp_10Concrete(exp_10):
-    def __init__():
-      ''''''
+    def __init__(self, value):
+      self.value = value
     def accept(self, visitor):
       return visitor.visit_exp_10Concrete(self)
 ###

@@ -87,15 +87,24 @@ def p_decl_variavel(p):
        p[0] = sa.decl_variavelConcrete(p[1],p[2],p[4],None)
     if(len(p) == 5):
        p[0] = sa.decl_variavelConcrete(p[1],p[2],None,p[3])
-    else:
+    if(len(p) == 4):
        p[0] = sa.decl_variavelConcrete(p[1],p[2],None,None)
 
 
 def p_decl_variavel_n(p):
     '''decl_variavel_n : VIRGULA ID decl_variavel_n
                      | VIRGULA ID RECEBER exp decl_variavel_n
+                     | VIRGULA ID RECEBER exp
                      | VIRGULA ID 
                      '''
+    if(len(p) == 6):
+      p[0] = sa.decl_variavel_nConcrete(p[2],p[4],p[5])
+    if(len(p) == 5):
+      p[0] = sa.decl_variavel_nConcrete(p[2],p[4],None)
+    if(len(p) == 4):
+      p[0] = sa.decl_variavel_nConcrete(p[2],None,p[3])
+    if(len(p) == 3):
+      p[0] = sa.decl_variavel_nConcrete(p[2],None,None)
 
 def p_typedef(p):
     '''typedef : TYPEDEF tipo ID PONTO_VIRG
@@ -129,30 +138,50 @@ def p_comando(p):
 def p_exp(p):
     '''exp : exp RECEBER exp_1
            | exp_1'''
+    if(len(p) == 4):
+      p[0] = sa.expConcrete(p[1],p[3])
+    else:
+      p[0] = sa.expConcrete(None,p[1])
 
 
 def p_exp_1(p):
     '''exp_1 : exp_1 OP_OU exp_2 
            | exp_1 OR exp_2
            | exp_2'''
+    if(len(p) == 4):
+      p[0] = sa.exp_1Concrete(p[1],p[3])
+    else:
+      p[0] = sa.exp_1Concrete(None,p[1])
 
 
 def p_exp_2(p):
     '''exp_2 : exp_2 OP_E exp_3
            | exp_2 AND exp_3
            | exp_3'''
+    if(len(p) == 4):
+      p[0] = sa.exp_2Concrete(p[1],p[3])
+    else:
+      p[0] = sa.exp_2Concrete(None,p[1])
 
 
 def p_exp_3(p):
     '''exp_3 : exp_3 OP_OU_EX exp_4
            | exp_3 XOR exp_4
            | exp_4'''
+    if(len(p) == 4):
+      p[0] = sa.exp_3Concrete(p[1],p[3])
+    else:
+      p[0] = sa.exp_3Concrete(None,p[1])
 
 
 def p_exp_4(p):
     '''exp_4 : exp_4 IGUAL exp_5
            | exp_4 DIFERENTE exp_5
            | exp_5'''
+    if(len(p) == 4):
+      p[0] = sa.exp_4Concrete(p[1],p[3])
+    else:
+      p[0] = sa.exp_4Concrete(None,p[1])
 
 
 def p_exp_5(p):
@@ -161,12 +190,20 @@ def p_exp_5(p):
            | exp_5 MAIOR_IGUAL exp_6
            | exp_5 MENOR_IGUAL exp_6
            | exp_6'''
+    if(len(p) == 4):
+      p[0] = sa.exp_5Concrete(p[1],p[3])
+    else:
+      p[0] = sa.exp_5Concrete(None,p[1])
 
 
 def p_exp_6(p):
     '''exp_6 : exp_6 SOMA exp_7
            | exp_6 SUB exp_7
            | exp_7'''
+    if(len(p) == 4):
+      p[0] = sa.exp_6Concrete(p[1],p[3])
+    else:
+      p[0] = sa.exp_6Concrete(None,p[1])
 
 
 def p_exp_7(p):
@@ -174,6 +211,10 @@ def p_exp_7(p):
            | exp_7 DIV exp_8
            | exp_7 MODULO exp_8
            | exp_8'''
+    if(len(p) == 4):
+      p[0] = sa.exp_7Concrete(p[1],p[3])
+    else:
+      p[0] = sa.exp_7Concrete(None,p[1])
 
 
 def p_exp_8(p):
@@ -184,11 +225,17 @@ def p_exp_8(p):
            | SIZEOF PARENT_ABRE exp_9 PARENT_FECHA
            | NEW tipo PONTO_VIRG
            | exp_9'''
+    if(len(p) == 2):
+      p[0] = sa.exp_8Concrete(p[1])
 
 def p_exp_9(p):
-  '''exp_9 : exp_9 PONTO exp_10
-           | exp_9 SETA exp_10
-           | exp_10'''
+    '''exp_9 : exp_9 PONTO exp_10
+             | exp_9 SETA exp_10
+             | exp_10'''
+    if(len(p) == 4):
+      p[0] = sa.exp_9Concrete(p[1],p[3])
+    else:
+      p[0] = sa.exp_9Concrete(None,p[1])
 
 
 def p_exp_10(p):
@@ -200,6 +247,7 @@ def p_exp_10(p):
            | STRING_V
            | THIS
            | PARENT_ABRE exp PARENT_FECHA'''
+    p[0] = sa.exp_10Concrete(p[1])
 
 
 def p_chamada_funcao(p):

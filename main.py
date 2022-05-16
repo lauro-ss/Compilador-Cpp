@@ -40,9 +40,8 @@ void main(){
 cl = '''
 class teste{
     public:
-      int a;
-      static void teste(int a, string b, bool c, tipo d){
-        int a;
+      int a = 2, b = 2;
+      static void teste( string b, bool c, tipo d){
       }
 };
 '''
