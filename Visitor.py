@@ -118,70 +118,168 @@ class Visitor(visitor_abstract):
     def visit_expConcrete(self, expConcrete):
       if(expConcrete.exp):
         expConcrete.exp.accept(self)
-        print("=",end='', sep='')
+        print(" = ",end='', sep='')
       if(expConcrete.exp_1):
         expConcrete.exp_1.accept(self)
 
     ###
 
-    def visit_exp_1Concrete(self,exp_1Concrete):
+    def visit_exp_1_OR(self,exp_1Concrete):
       if(exp_1Concrete.exp_1):
         exp_1Concrete.exp_1.accept(self)
-        print("OR",end='', sep='')
+        print(" or ",end='', sep='')
       if(exp_1Concrete.exp_2):
         exp_1Concrete.exp_2.accept(self)
 
-    ###
+    def visit_exp_1_OP_OU(self,exp_1Concrete):
+      if(exp_1Concrete.exp_1):
+        exp_1Concrete.exp_1.accept(self)
+        print(" || ",end='', sep='')
+      if(exp_1Concrete.exp_2):
+        exp_1Concrete.exp_2.accept(self)
 
-    def visit_exp_2Concrete(self,exp_2Concrete):
+    def visit_exp_1Concrete(self,exp_1Concrete):
+      if(exp_1Concrete.exp_2):
+       exp_1Concrete.exp_2.accept(self)
+
+    ###
+        
+    def visit_exp_2_AND(self,exp_2Concrete):
       if(exp_2Concrete.exp_2):
         exp_2Concrete.exp_2.accept(self)
-        print("AND",end='', sep='')
+        print(" and ",end='', sep='')
+      if(exp_2Concrete.exp_3):
+        exp_2Concrete.exp_3.accept(self)
+
+    def visit_exp_2_OP_E(self,exp_2Concrete):
+      if(exp_2Concrete.exp_2):
+        exp_2Concrete.exp_2.accept(self)
+        print(" && ",end='', sep='')
+      if(exp_2Concrete.exp_3):
+        exp_2Concrete.exp_3.accept(self)
+        
+    def visit_exp_2Concrete(self,exp_2Concrete):
       if(exp_2Concrete.exp_3):
         exp_2Concrete.exp_3.accept(self)
     
     ###
 
-    def visit_exp_3Concrete(self,exp_3Concrete):
+    def visit_exp_3_XOR(self,exp_3Concrete):
       if(exp_3Concrete.exp_3):
         exp_3Concrete.exp_3.accept(self)
-        print("XOR",end='', sep='')
+        print(" xor ",end='', sep='')
+      if(exp_3Concrete.exp_4):
+        exp_3Concrete.exp_4.accept(self)
+
+    def visit_exp_3_OP_OU_EX(self,exp_3Concrete):
+      if(exp_3Concrete.exp_3):
+        exp_3Concrete.exp_3.accept(self)
+        print(" ^ ",end='', sep='')
+      if(exp_3Concrete.exp_4):
+        exp_3Concrete.exp_4.accept(self)
+
+    def visit_exp_3Concrete(self,exp_3Concrete):
       if(exp_3Concrete.exp_4):
         exp_3Concrete.exp_4.accept(self)
 
     ###
 
     def visit_exp_4Concrete(self,exp_4Concrete):
+      if(exp_4Concrete.exp_5):
+        exp_4Concrete.exp_5.accept(self)
+    
+    def visit_exp_4_IGUAL(self,exp_4Concrete):
       if(exp_4Concrete.exp_4):
         exp_4Concrete.exp_4.accept(self)
-        print("==",end='', sep='')
+        print(" == ",end='', sep='')
+      if(exp_4Concrete.exp_5):
+        exp_4Concrete.exp_5.accept(self)
+
+    def visit_exp_4_DIFERENTE(self,exp_4Concrete):
+      if(exp_4Concrete.exp_4):
+        exp_4Concrete.exp_4.accept(self)
+        print(" != ",end='', sep='')
       if(exp_4Concrete.exp_5):
         exp_4Concrete.exp_5.accept(self)
 
       ###
 
     def visit_exp_5Concrete(self,exp_5Concrete):
+      if(exp_5Concrete.exp_6):
+        exp_5Concrete.exp_6.accept(self)
+
+    def visit_exp_5_MENOR_Q(self,exp_5Concrete):
       if(exp_5Concrete.exp_5):
         exp_5Concrete.exp_5.accept(self)
-        print("<",end='', sep='')
+        print(" < ",end='', sep='')
+      if(exp_5Concrete.exp_6):
+        exp_5Concrete.exp_6.accept(self)
+
+    def visit_exp_5_MAIOR_Q(self,exp_5Concrete):
+      if(exp_5Concrete.exp_5):
+        exp_5Concrete.exp_5.accept(self)
+        print(" > ",end='', sep='')
+      if(exp_5Concrete.exp_6):
+        exp_5Concrete.exp_6.accept(self)
+
+    def visit_exp_5_MAIOR_IGUAL(self,exp_5Concrete):
+      if(exp_5Concrete.exp_5):
+        exp_5Concrete.exp_5.accept(self)
+        print(" >= ",end='', sep='')
+      if(exp_5Concrete.exp_6):
+        exp_5Concrete.exp_6.accept(self)
+
+    def visit_exp_5_MENOR_IGUAL(self,exp_5Concrete):
+      if(exp_5Concrete.exp_5):
+        exp_5Concrete.exp_5.accept(self)
+        print(" <= ",end='', sep='')
       if(exp_5Concrete.exp_6):
         exp_5Concrete.exp_6.accept(self)
 
       ###
 
     def visit_exp_6Concrete(self,exp_6Concrete):
+      if(exp_6Concrete.exp_7):
+        exp_6Concrete.exp_7.accept(self)
+
+    def visit_exp_6_SOMA(self,exp_6Concrete):
       if(exp_6Concrete.exp_6):
         exp_6Concrete.exp_6.accept(self)
-        print("+",end='', sep='')
+        print(" + ",end='', sep='')
+      if(exp_6Concrete.exp_7):
+        exp_6Concrete.exp_7.accept(self)
+
+    def visit_exp_6_SUB(self,exp_6Concrete):
+      if(exp_6Concrete.exp_6):
+        exp_6Concrete.exp_6.accept(self)
+        print(" - ",end='', sep='')
       if(exp_6Concrete.exp_7):
         exp_6Concrete.exp_7.accept(self)
 
       ###
 
     def visit_exp_7Concrete(self,exp_7Concrete):
+      if(exp_7Concrete.exp_8):
+        exp_7Concrete.exp_8.accept(self)
+
+    def visit_exp_7_MULT(self,exp_7Concrete):
       if(exp_7Concrete.exp_7):
         exp_7Concrete.exp_7.accept(self)
-        print("*",end='', sep='')
+        print(" * ",end='', sep='')
+      if(exp_7Concrete.exp_8):
+        exp_7Concrete.exp_8.accept(self)
+
+    def visit_exp_7_DIV(self,exp_7Concrete):
+      if(exp_7Concrete.exp_7):
+        exp_7Concrete.exp_7.accept(self)
+        print(" / ",end='', sep='')
+      if(exp_7Concrete.exp_8):
+        exp_7Concrete.exp_8.accept(self)
+
+    def visit_exp_7_MODULO(self,exp_7Concrete):
+      if(exp_7Concrete.exp_7):
+        exp_7Concrete.exp_7.accept(self)
+        print(" % ",end='', sep='')
       if(exp_7Concrete.exp_8):
         exp_7Concrete.exp_8.accept(self)
 
@@ -208,3 +306,34 @@ class Visitor(visitor_abstract):
 
     def visit_tipoConcrete(self, tipoConcrete):
       print(tipoConcrete.tipo_v, ' ',end='', sep='')
+
+    ###
+
+    def visit_usingConcrete(self, usingConcrete):
+      print(usingConcrete.using, ' ', usingConcrete.id1, ' ', usingConcrete.id2, ';','\n' , end='', sep='')
+
+    def visit_usingConcrete1(self, usingConcrete1):
+      print(usingConcrete1.using, ' ', usingConcrete1.id1, '::', usingConcrete1.id2, ';' , '\n' , end='', sep='')
+
+    ###
+    def visit_typedefConcrete(self, typedefConcrete):
+      print(typedefConcrete.typedef,' ', end='', sep='')
+      typedefConcrete.tipo.accept(self)      
+      print(' ', typedefConcrete.id, ';', '\n' , end='', sep='')
+
+    def visit_typedefConcrete1(self, typedefConcrete1):
+      print(typedefConcrete1.typedef,' ', end='', sep='')
+      typedefConcrete1.tipo.accept(self)      
+      print(' ', typedefConcrete1.id, end='', sep='')
+      typedefConcrete1.decl_typedef.accept(self)
+      print(';', '\n' , end='', sep='')
+
+    ###
+    def visit_decl_typedef_nConcrete(self, decl_typedef_nConcrete):
+      print(',', decl_typedef_nConcrete.id,' ', end='', sep='')
+      if(typedef_nConcrete.decl_typedef_n):
+        decl_typedef_nConcrete.decl_typedef_n.accept(self)
+        print(' ', end='', sep='')
+
+    def visit_decl_typedef_nConcrete1(self, decl_typedef_nConcrete1):
+      print(',', decl_typedef_nConcrete1.id, end='', sep='')

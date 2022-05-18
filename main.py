@@ -38,9 +38,13 @@ void main(){
 }'''
 
 cl = '''
+using namespace std;
+using std::cout;
+typedef int inteiro, abc;
 class teste{
     public:
-      int a = 2, b = 2;
+      int c, d, e;
+      int d = 2 * 2, a = 3 / 3, c = 3 % 3;
       static void teste( string b, bool c, tipo d){
       }
 };

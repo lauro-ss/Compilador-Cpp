@@ -109,14 +109,26 @@ def p_decl_variavel_n(p):
 def p_typedef(p):
     '''typedef : TYPEDEF tipo ID PONTO_VIRG
                | TYPEDEF tipo ID decl_typedef_n PONTO_VIRG'''
+    if(len(p) == 5):
+      p[0] = sa.typedefConcrete(p[1], p[2], p[3])
+    if(len(p) == 6):
+      p[0] = sa.typedefConcrete1(p[1], p[2], p[3], p[4])
 
 def p_decl_typedef_n(p):
     '''decl_typedef_n : VIRGULA ID decl_typedef_n
                       | VIRGULA ID'''
+    if(len(p) == 4):
+      p[0] = sa.decl_typedef_nConcrete(p[2], p[3])
+    if(len(p) == 3):
+      p[0] = sa.decl_typedef_nConcrete(p[2], None)
 
 def p_using(p):
     '''using : USING ID 2X_DOIS_PONTOS ID PONTO_VIRG
              | USING ID ID PONTO_VIRG'''
+    if(len(p) == 6):
+      p[0] = sa.usingConcrete1(p[1], p[2], p[4])
+    if(len(p) == 5):
+      p[0] = sa.usingConcrete(p[1], p[2], p[3])
 
 def p_body(p):
     '''body : CHAVE_ABRE comandos CHAVE_FECHA
@@ -148,40 +160,48 @@ def p_exp_1(p):
     '''exp_1 : exp_1 OP_OU exp_2 
            | exp_1 OR exp_2
            | exp_2'''
-    if(len(p) == 4):
-      p[0] = sa.exp_1Concrete(p[1],p[3])
-    else:
-      p[0] = sa.exp_1Concrete(None,p[1])
+    if(len(p) == 4 and p[2] == "or"):
+      p[0] = sa.exp_1_OR(p[1],p[3])
+    if(len(p) == 4 and p[2] == "||"):
+      p[0] = sa.exp_1_OP_OU(p[1],p[3])
+    if(len(p) == 2):
+      p[0] = sa.exp_1Concrete(p[1])
 
 
 def p_exp_2(p):
     '''exp_2 : exp_2 OP_E exp_3
            | exp_2 AND exp_3
            | exp_3'''
-    if(len(p) == 4):
-      p[0] = sa.exp_2Concrete(p[1],p[3])
-    else:
-      p[0] = sa.exp_2Concrete(None,p[1])
+    if(len(p) == 4 and p[2] == "and"):
+      p[0] = sa.exp_2_AND(p[1],p[3])
+    if(len(p) == 4 and p[2] == "&&"):
+      p[0] = sa.exp_2_OP_E(p[1],p[3])
+    if(len(p) == 2):
+      p[0] = sa.exp_2Concrete(p[1])
 
 
 def p_exp_3(p):
     '''exp_3 : exp_3 OP_OU_EX exp_4
            | exp_3 XOR exp_4
            | exp_4'''
-    if(len(p) == 4):
-      p[0] = sa.exp_3Concrete(p[1],p[3])
-    else:
-      p[0] = sa.exp_3Concrete(None,p[1])
+    if(len(p) == 4 and p[2]  == "xor"):
+      p[0] = sa.exp_3_XOR(p[1],p[3])
+    if(len(p) == 4 and p[2]  == "^"):
+      p[0] = sa.exp_3_OP_OU_EX(p[1],p[3])
+    if(len(p) == 2):
+      p[0] = sa.exp_3Concrete(p[1])
 
 
 def p_exp_4(p):
     '''exp_4 : exp_4 IGUAL exp_5
            | exp_4 DIFERENTE exp_5
            | exp_5'''
-    if(len(p) == 4):
-      p[0] = sa.exp_4Concrete(p[1],p[3])
-    else:
-      p[0] = sa.exp_4Concrete(None,p[1])
+    if(len(p) == 4 and p[2] == "=="):
+      p[0] = sa.exp_4_IGUAL(p[1],p[3])
+    if(len(p) == 4 and p[2] == "!="):
+      p[0] = sa.exp_4_DIFERENTE(p[1],p[3])
+    if(len(p) == 2):
+      p[0] = sa.exp_4Concrete(p[1])
 
 
 def p_exp_5(p):
@@ -190,9 +210,15 @@ def p_exp_5(p):
            | exp_5 MAIOR_IGUAL exp_6
            | exp_5 MENOR_IGUAL exp_6
            | exp_6'''
-    if(len(p) == 4):
-      p[0] = sa.exp_5Concrete(p[1],p[3])
-    else:
+    if(len(p) == 4 and p[2] == "<"):
+      p[0] = sa.exp_5_MENOR_Q(p[1],p[3])
+    if(len(p) == 4 and p[2] == ">"):
+      p[0] = sa.exp_5_MAIOR_Q(p[1],p[3])
+    if(len(p) == 4 and p[2] == ">="):
+      p[0] = sa.exp_5_MAIOR_IGUAL(p[1],p[3])
+    if(len(p) == 4 and p[2] == "<="):
+      p[0] = sa.exp_5_MENOR_IGUAL(p[1],p[3])
+    if(len(p) == 2):
       p[0] = sa.exp_5Concrete(None,p[1])
 
 
@@ -200,10 +226,12 @@ def p_exp_6(p):
     '''exp_6 : exp_6 SOMA exp_7
            | exp_6 SUB exp_7
            | exp_7'''
-    if(len(p) == 4):
-      p[0] = sa.exp_6Concrete(p[1],p[3])
-    else:
-      p[0] = sa.exp_6Concrete(None,p[1])
+    if(len(p) == 4 and p[2] == "+"):
+      p[0] = sa.exp_6_SOMA(p[1],p[3])
+    if(len(p) == 4 and p[2] == "-"):
+      p[0] = sa.exp_6_SUB(p[1],p[3])
+    if(len(p) == 2):
+      p[0] = sa.exp_6Concrete(p[1])
 
 
 def p_exp_7(p):
@@ -211,10 +239,14 @@ def p_exp_7(p):
            | exp_7 DIV exp_8
            | exp_7 MODULO exp_8
            | exp_8'''
-    if(len(p) == 4):
-      p[0] = sa.exp_7Concrete(p[1],p[3])
-    else:
-      p[0] = sa.exp_7Concrete(None,p[1])
+    if(len(p) == 4 and p[2] == "*"):
+      p[0] = sa.exp_7_MULT(p[1],p[3])
+    if(len(p) == 4 and p[2] == "/"):
+      p[0] = sa.exp_7_DIV(p[1],p[3])
+    if(len(p) == 4 and p[2] == "%"):
+      p[0] = sa.exp_7_MODULO(p[1],p[3])
+    if(len(p) == 2):
+      p[0] = sa.exp_7Concrete(p[1])
 
 
 def p_exp_8(p):
