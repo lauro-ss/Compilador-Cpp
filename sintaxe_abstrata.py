@@ -157,7 +157,7 @@ class typedefConcrete1(typedef):
       self.decl_typedef = decl_typedef
       
     def accept(self, visitor):
-      return visitor.visit_typedefConcrete(self)
+      return visitor.visit_typedefConcrete1(self)
 ###
 ###
 
@@ -498,6 +498,43 @@ class exp_8Concrete(exp_8):
       self.exp_9 = exp_9
     def accept(self, visitor):
       return visitor.visit_exp_8Concrete(self)
+
+class exp_8_SIZEOF(exp_8):
+    def __init__(self, sizeof, exp_9):
+      self.sizeof = sizeof
+      self.exp_9 = exp_9
+    def accept(self, visitor):
+      return visitor.visit_exp_8_SIZEOF(self)
+
+class exp_8_OP_NOT(exp_8):
+    def __init__(self, exp_9):
+      self.exp_9 = exp_9
+    def accept(self, visitor):
+      return visitor.visit_exp_8_OP_NOT(self)
+
+class exp_8_NOT(exp_8):
+    def __init__(self, exp_9):
+      self.exp_9 = exp_9
+    def accept(self, visitor):
+      return visitor.visit_exp_8_NOT(self)
+
+class exp_8_NEW(exp_8):
+    def __init__(self, tipo):
+      self.tipo = tipo
+    def accept(self, visitor):
+      return visitor.visit_exp_8_NEW(self)
+
+class exp_8_MAIS_MAIS(exp_8):
+    def __init__(self, exp_9):
+      self.exp_9 = exp_9
+    def accept(self, visitor):
+      return visitor.visit_exp_8_MAIS_MAIS(self)
+
+class exp_8_MENOS_MENOS(exp_8):
+    def __init__(self, exp_9):
+      self.exp_9 = exp_9
+    def accept(self, visitor):
+      return visitor.visit_exp_8_MENOS_MENOS(self)
 ###
 ###
 
@@ -507,11 +544,25 @@ class exp_9(metaclass=ABCMeta):
         pass
 
 class exp_9Concrete(exp_9):
+    def __init__(self, exp_10):
+      self.exp_10 = exp_10
+      
+    def accept(self, visitor):
+      return visitor.visit_exp_9Concrete(self)
+
+class exp_9_PONTO(exp_9):
     def __init__(self, exp_9, exp_10):
       self.exp_9 = exp_9
       self.exp_10 = exp_10
     def accept(self, visitor):
-      return visitor.visit_exp_9Concrete(self)
+      return visitor.visit_exp_9_PONTO(self)
+
+class exp_9_SETA(exp_9):
+    def __init__(self, exp_9, exp_10):
+      self.exp_9 = exp_9
+      self.exp_10 = exp_10
+    def accept(self, visitor):
+      return visitor.visit_exp_9_SETA(self)
 ###
 ###
 
@@ -523,8 +574,16 @@ class exp_10(metaclass=ABCMeta):
 class exp_10Concrete(exp_10):
     def __init__(self, value):
       self.value = value
+      
     def accept(self, visitor):
       return visitor.visit_exp_10Concrete(self)
+
+class exp_10_exp(exp_10):
+    def __init__(self, exp):
+      self.exp = exp
+      
+    def accept(self, visitor):
+      return visitor.visit_exp_10_exp(self)
 ###
 ###
 
@@ -538,6 +597,21 @@ class chamada_funcaoConcrete(chamada_funcao):
       ''''''
     def accept(self, visitor):
       return visitor.visit_chamada_funcaoConcrete(self)
+
+###
+###
+
+class parametros_chamada(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class parametros_chamadaConcrete(parametros_chamada):
+    def __init__():
+      ''''''
+    def accept(self, visitor):
+      return visitor.visit_parametros_chamadaConcrete(self)
+      
 ###
 ###
 

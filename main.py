@@ -43,15 +43,16 @@ using std::cout;
 typedef int inteiro, abc;
 class teste{
     public:
-      int c, d, e;
+      int c, d, e = a->t, d = (2+2);
       int d = 2 * 2, a = 3 / 3, c = 3 % 3;
       static void teste( string b, bool c, tipo d){
       }
 };
+
 '''
 ttt = '''
 void main(int n){
-
+ teste(a,c);
 }
 '''
 

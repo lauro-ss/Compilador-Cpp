@@ -255,8 +255,26 @@ def p_exp_8(p):
            | exp_9 MAIS_MAIS
            | exp_9 MENOS_MENOS
            | SIZEOF PARENT_ABRE exp_9 PARENT_FECHA
-           | NEW tipo PONTO_VIRG
+           | NEW tipo
            | exp_9'''
+    if(len(p) == 5):
+      p[0] = sa.exp_8_SIZEOF(p[1],p[3])
+    
+    if(len(p) == 3 and p[1] == '!'):
+      p[0] = sa.exp_8_OP_NOT(p[2])
+    
+    if(len(p) == 3 and p[1] == 'not'):
+      p[0] = sa.exp_8_NOT(p[2])
+    
+    if(len(p) == 3 and p[1] == 'new'):
+      p[0] = sa.exp_8_NEW(p[2])
+    
+    if(len(p) == 3 and p[2] == '++'):
+      p[0] = sa.exp_8_MAIS_MAIS(p[1])
+    
+    if(len(p) == 3 and p[2] == '--'):
+      p[0] = sa.exp_8_MENOS_MENOS(p[1])
+    
     if(len(p) == 2):
       p[0] = sa.exp_8Concrete(p[1])
 
@@ -264,10 +282,12 @@ def p_exp_9(p):
     '''exp_9 : exp_9 PONTO exp_10
              | exp_9 SETA exp_10
              | exp_10'''
-    if(len(p) == 4):
-      p[0] = sa.exp_9Concrete(p[1],p[3])
-    else:
-      p[0] = sa.exp_9Concrete(None,p[1])
+    if(len(p) == 4 and p[2] == '.'):
+      p[0] = sa.exp_9_PONTO(p[1],p[3])
+    if(len(p) == 4 and p[2] == '->'):
+      p[0] = sa.exp_9_SETA(p[1],p[3])
+    if(len(p) == 2):
+      p[0] = sa.exp_9Concrete(p[1])
 
 
 def p_exp_10(p):
@@ -279,13 +299,20 @@ def p_exp_10(p):
            | STRING_V
            | THIS
            | PARENT_ABRE exp PARENT_FECHA'''
-    p[0] = sa.exp_10Concrete(p[1])
+    if(len(p) == 4):
+      p[0] = sa.exp_10_exp(p[2])
+    if(len(p) == 2):
+      p[0] = sa.exp_10Concrete(p[1])
 
 
 def p_chamada_funcao(p):
-    '''chamada_funcao : ID PARENT_ABRE parametros PARENT_FECHA
-                    | ID PARENT_ABRE PARENT_FECHA
-                    | TYPEID PARENT_ABRE exp PARENT_FECHA'''
+    '''chamada_funcao : ID PARENT_ABRE parametros_chamada PARENT_FECHA
+                      | ID PARENT_ABRE PARENT_FECHA
+                      | TYPEID PARENT_ABRE exp PARENT_FECHA'''
+
+def p_parametros_chamada(p):
+    '''parametros_chamada : ID VIRGULA parametros_chamada
+                          | ID'''
 
 def p_condicional_1(p):
     '''condicional_1 : IF PARENT_ABRE exp PARENT_FECHA rest_if
@@ -293,6 +320,7 @@ def p_condicional_1(p):
                      | decl_variavel
                      | typedef
                      | using
+                     | chamada_funcao
                      | WHILE PARENT_ABRE exp PARENT_FECHA body
                      | FOR PARENT_ABRE for_log PARENT_FECHA body
                      | WHILE PARENT_ABRE exp PARENT_FECHA condicional_1
