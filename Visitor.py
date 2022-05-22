@@ -338,10 +338,83 @@ class Visitor(visitor_abstract):
     def visit_exp_10Concrete(self,exp_10Concrete):
       print(exp_10Concrete.value,end='', sep='')
 
+    def visit_exp_10_funcao(self,exp_10_funcao):
+      exp_10_funcao.funcao.accept(self)
+
     def visit_exp_10_exp(self,exp_10Concrete):
       print('(',end='', sep='')
       exp_10Concrete.exp.accept(self)
       print(')',end='', sep='')
+      
+    ###
+
+    def visit_chamada_funcaoConcrete(self, chamada_funcaoConcrete):
+      print(chamada_funcaoConcrete.id, "(",end='', sep='')
+      if(chamada_funcaoConcrete.parametros_chamada):
+        chamada_funcaoConcrete.parametros_chamada.accept(self)
+      print(")",end='', sep='')
+
+    def visit_chamada_funcaoTypeid(self, chamada_funcaoTypeid):
+      print(chamada_funcaoTypeid.typeid, "(",end='', sep='')
+      chamada_funcaoTypeid.exp.accept(self)
+      print(")",end='', sep='')
+
+    def visit_parametros_chamadaConcrete(self, parametros_chamadaConcrete):
+      print(parametros_chamadaConcrete.id,end='', sep='')
+      if(parametros_chamadaConcrete.parametros_chamada):
+        print(",",end='', sep='')
+        parametros_chamadaConcrete.parametros_chamada.accept(self)
+      
+    ###
+
+    def visit_condicional_1_IF(self, condicional_1_IF):
+      print(condicional_1_IF.IF, "(",end='', sep='')
+      condicional_1_IF.exp.accept(self)
+      print(")",end='', sep='')
+      condicional_1_IF.rest_if.accept(self)
+
+    def visit_condicional_1_WHILE(self, condicional_1_WHILE):
+      print(condicional_1_WHILE.WHILE, "(",end='', sep='')
+      condicional_1_WHILE.exp
+      print(")",end='', sep='')
+      condicional_1_WHILE.body.accept(self)
+
+    def visit_condicional_1_FOR(self, condicional_1_FOR):
+      print(condicional_1_FOR.FOR, "(",end='', sep='')
+      condicional_1_FOR.for_log.accept(self)
+      print(")",end='', sep='')
+      condicional_1_FOR.body.accept(self)
+
+    def visit_condicional_1_RETURN(self, condicional_1_RETURN):
+      print(condicional_1_RETURN.RETURN," ",end='', sep='')
+      if(condicional_1_RETURN.exp):
+        condicional_1_RETURN.exp.accept(self)
+      print(";",end='', sep='')
+
+    def visit_condicional_1_decl_variavel(self, condicional_1_decl_variavel):
+      condicional_1_decl_variavel.decl_variavel.accept(self)
+
+    def visit_condicional_1_typedef(self, condicional_1_typedef):
+      condicional_1_typedef.typedef.accept(self)
+
+    def visit_condicional_1_using(self, condicional_1_using):
+      condicional_1_using.using.accept(self)
+        
+    ###
+
+    def visit_condicional_2Concrete(self, condicional_2Concrete):
+      print(condicional_2Concrete.IF, "(",end='', sep='')
+      condicional_2Concrete.exp.accept(self)
+      print(")",end='', sep='')
+      condicional_2Concrete.body.accept(self)
+    
+    def visit_condicional_2Concrete_2(self, condicional_2Concrete_2):
+      print(condicional_2Concrete_2.IF, "(" ,end='', sep='')
+      condicional_2Concrete_2.exp.accept(self)
+      print(")",end='', sep='')
+      condicional_2Concrete_2.body.accept(self)
+      print(condicional_2Concrete_2.ELSE, "\n", ,end='', sep='')
+      condicional_2Concrete_2.condicional_2.accept(self)
       
     ###
 

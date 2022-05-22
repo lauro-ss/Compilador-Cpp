@@ -578,6 +578,13 @@ class exp_10Concrete(exp_10):
     def accept(self, visitor):
       return visitor.visit_exp_10Concrete(self)
 
+class exp_10_funcao(exp_10):
+    def __init__(self, funcao):
+      self.funcao = funcao
+      
+    def accept(self, visitor):
+      return visitor.visit_exp_10_funcao(self)
+
 class exp_10_exp(exp_10):
     def __init__(self, exp):
       self.exp = exp
@@ -593,10 +600,18 @@ class chamada_funcao(metaclass=ABCMeta):
         pass
 
 class chamada_funcaoConcrete(chamada_funcao):
-    def __init__():
-      ''''''
+    def __init__(self, id, parametros_chamada):
+      self.id = id
+      self.parametros_chamada = parametros_chamada
     def accept(self, visitor):
       return visitor.visit_chamada_funcaoConcrete(self)
+
+class chamada_funcaoTypeid(chamada_funcao):
+    def __init__(self, typeid, exp):
+      self.typeid = typeid
+      self.exp = exp
+    def accept(self, visitor):
+      return visitor.visit_chamada_funcaoTypeid(self)
 
 ###
 ###
@@ -607,8 +622,9 @@ class parametros_chamada(metaclass=ABCMeta):
         pass
 
 class parametros_chamadaConcrete(parametros_chamada):
-    def __init__():
-      ''''''
+    def __init__(self, id, parametros_chamada):
+      self.id = id
+      self.parametros_chamada = parametros_chamada
     def accept(self, visitor):
       return visitor.visit_parametros_chamadaConcrete(self)
       
@@ -620,11 +636,57 @@ class condicional_1(metaclass=ABCMeta):
     def accept(self, visitor):
         pass
 
-class condicional_1Concrete(condicional_1):
-    def __init__():
-      ''''''
+class condicional_1_IF(condicional_1):
+    def __init__(self, IF, exp , rest_if):
+      self.IF = IF
+      self.exp = exp
+      self.rest_if = rest_if
     def accept(self, visitor):
-      return visitor.visit_condicional_1Concrete(self)
+      return visitor.visit_condicional_1_IF(self)
+
+class condicional_1_WHILE(condicional_1):
+    def __init__(self, WHILE, exp, body):
+      self.WHILE = WHILE
+      self.exp = exp
+      self.body = body
+    def accept(self, visitor):
+      return visitor.visit_condicional_1_WHILE(self)
+
+class condicional_1_FOR(condicional_1):
+    def __init__(self, FOR, for_log, body):
+      self.FOR = FOR
+      self.for_log = for_log
+      self.body = body
+    def accept(self, visitor):
+      return visitor.visit_condicional_1_FOR(self)
+
+class condicional_1_RETURN(condicional_1):
+    def __init__(self, RETURN, exp):
+      self.RETURN = RETURN
+      self.exp = exp
+    def accept(self, visitor):
+      return visitor.visit_condicional_1_RETURN(self)
+
+class condicional_1_decl_variavel(condicional_1):
+    def __init__(self, decl_variavel):
+      self.decl_variavel = decl_variavel
+      
+    def accept(self, visitor):
+      return visitor.visit_condicional_1_decl_variavel(self)
+
+class condicional_1_typedef(condicional_1):
+    def __init__(self, typedef):
+      self.typedef = typedef
+      
+    def accept(self, visitor):
+      return visitor.visit_condicional_1_typedef(self)
+
+class condicional_1_using(condicional_1):
+    def __init__(self, using):
+      self.using = using
+      
+    def accept(self, visitor):
+      return visitor.visit_condicional_1_using(self)
 ###
 ###
 
@@ -634,10 +696,22 @@ class condicional_2(metaclass=ABCMeta):
         pass
 
 class condicional_2Concrete(condicional_2):
-    def __init__():
-      ''''''
+    def __init__(self, IF, exp, body):
+      self.IF = IF
+      self.exp = exp
+      self.body = body
     def accept(self, visitor):
       return visitor.visit_condicional_2Concrete(self)
+
+class condicional_2Concrete_2(condicional_2):
+    def __init__(self, IF, exp, body, ELSE, condicional_2):
+      self.IF = IF
+      self.exp = exp
+      self.body = body
+      self.ELSE = ELSE
+      self.condicional_2 = condicional_2
+    def accept(self, visitor):
+      return visitor.visit_condicional_2Concrete_2(self)
 ###
 ###
 
