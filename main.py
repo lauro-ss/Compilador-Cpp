@@ -46,6 +46,8 @@ class teste{
       int c, d, e = a->t, d = teste(a,b,c,d);
       int d = 2 * 2, a = 3 / 3, c = 3 % 3;
       static void teste( string b, bool c, tipo d){
+        int a;
+        a = teste(a,b,c,d);
       }
 };
 

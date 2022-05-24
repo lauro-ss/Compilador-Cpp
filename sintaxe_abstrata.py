@@ -229,8 +229,9 @@ class comandos(metaclass=ABCMeta):
         pass
 
 class comandosConcrete(comandos):
-    def __init__():
-      ''''''
+    def __init__(self, comando, comandos):
+      self.comando = comando
+      self.comandos = comandos
     def accept(self, visitor):
       return visitor.visit_comandosConcrete(self)
 ###
@@ -242,8 +243,8 @@ class comando(metaclass=ABCMeta):
         pass
 
 class comandoConcrete(comando):
-    def __init__():
-      ''''''
+    def __init__(self, condicional):
+      self.condicional = condicional
     def accept(self, visitor):
       return visitor.visit_comandoConcrete(self)
 ###
@@ -667,6 +668,12 @@ class condicional_1_RETURN(condicional_1):
     def accept(self, visitor):
       return visitor.visit_condicional_1_RETURN(self)
 
+class condicional_1_EXP(condicional_1):
+    def __init__(self, exp):
+      self.exp = exp
+    def accept(self, visitor):
+      return visitor.visit_condicional_1_EXP(self)
+
 class condicional_1_decl_variavel(condicional_1):
     def __init__(self, decl_variavel):
       self.decl_variavel = decl_variavel
@@ -721,8 +728,10 @@ class rest_if(metaclass=ABCMeta):
         pass
 
 class rest_ifConcrete(rest_if):
-    def __init__():
-      ''''''
+    def __init__(self, body_1, ELSE, body_2):
+      self.body_1 = body_1
+      self.ELSE = ELSE
+      self.body_2 = body_2
     def accept(self, visitor):
       return visitor.visit_rest_ifConcrete(self)
 ###
@@ -734,8 +743,10 @@ class for_log(metaclass=ABCMeta):
         pass
 
 class for_logConcrete(for_log):
-    def __init__():
-      ''''''
+    def __init__(self, decl_variavel, exp_1, exp_2):
+      self.decl_variavel = decl_variavel
+      self.exp_1 = exp_1
+      self.exp_2 = exp_2
     def accept(self, visitor):
       return visitor.visit_for_logConcrete(self)
 ###

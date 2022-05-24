@@ -140,11 +140,19 @@ def p_body(p):
 def p_comandos(p):
     ''' comandos : comando 
                | comando comandos'''
+    if(len(p) == 2):
+      p[0] = sa.comandosConcrete(p[1], None)
+    elif(len(p) == 3):
+      p[0] = sa.comandosConcrete(p[1], p[2])
 
 
 def p_comando(p):
     '''comando : condicional_1
                | condicional_2'''
+    if(isinstance(p[1],sa.condicional_1)):
+      p[0] = sa.comandoConcrete(p[1])
+    elif(isinstance(p[1],sa.condicional_2)):
+      p[0] = sa.comandoConcrete(p[1])
 
 
 def p_exp(p):
@@ -358,7 +366,7 @@ def p_condicional_1(p):
       p[0] = sa.condicional_1_RETURN(p[1],None)
     
     elif(len(p) == 3):
-      p[0] = sa.expConcrete(p[1])
+      p[0] = sa.condicional_1_EXP(p[1])
     
     elif(isinstance(p[1],sa.chamada_funcao)):
       p[0] = sa.exp_10_funcao(p[1])
@@ -387,6 +395,14 @@ def p_rest_if(p):
                | body ELSE body
                | condicional_1 ELSE body
                | body ELSE condicional_1'''
+    if(isinstance(p[1],sa.condicional_1) and isinstance(p[3],sa.condicional_1)):
+      p[0] = sa.rest_ifConcrete(p[1],p[2],p[3])
+    elif(isinstance(p[1],sa.body) and isinstance(p[3],sa.body)):
+      p[0] = sa.rest_ifConcrete(p[1],p[2],p[3])
+    elif(isinstance(p[1],sa.condicional_1) and isinstance(p[3],sa.body)):
+      p[0] = sa.rest_ifConcrete(p[1],p[2],p[3])
+    elif(isinstance(p[1],sa.body) and isinstance(p[1],sa.condicional_1)):
+      p[0] = sa.rest_ifConcrete(p[1],p[2],p[3])
 
 
 def p_for_log(p):
@@ -398,6 +414,29 @@ def p_for_log(p):
              | PONTO_VIRG exp PONTO_VIRG
              | PONTO_VIRG PONTO_VIRG exp
              | PONTO_VIRG PONTO_VIRG'''
+    if(len(p) == 3):
+      p[0] = sa.for_logConcrete(p[1],None,None)
+    
+    elif(len(p) == 4 and p[3] == ';'):
+      p[0] = sa.for_logConcrete(p[1],p[2],None)
+    
+    elif(len(p) == 5 and p[3] == ';'):
+      p[0] = sa.for_logConcrete(p[1],p[2],p[4])
+    
+    elif(len(p) == 4 and p[2] == ';'):
+      p[0] = sa.for_logConcrete(p[1],None,p[3])
+    
+    elif(len(p) == 5 and p[1] == ';'):
+      p[0] = sa.for_logConcrete(None,p[2],p[4])
+    
+    elif(len(p) == 4 and p[1] == ';'):
+      p[0] = sa.for_logConcrete(None,p[2],None)
+    
+    elif(len(p) == 4 and p[1] == ';' and p[2] == ';'):
+      p[0] = sa.for_logConcrete(p[1])
+    
+    elif(len(p) == 3 and p[1] == ';' and p[2] == ';'):
+      p[0] = sa.for_logConcrete(p[1])
 
 
 def p_tipo(p):

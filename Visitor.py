@@ -115,6 +115,21 @@ class Visitor(visitor_abstract):
 
     ###
 
+    def visit_comandosConcrete(self, comandosConcrete):
+      if(comandosConcrete.comando):
+        comandosConcrete.comando.accept(self)
+      if(comandosConcrete.comandos):
+        comandosConcrete.comandos.accept(self)
+      print("\n","\t",end='', sep='')
+
+    ###
+
+    def visit_comandoConcrete(self, comandoConcrete):
+      print("\n","\t","\t",end='', sep='')
+      comandoConcrete.condicional.accept(self)
+
+    ###
+
     def visit_expConcrete(self, expConcrete):
       if(expConcrete.exp):
         expConcrete.exp.accept(self)
@@ -391,6 +406,9 @@ class Visitor(visitor_abstract):
         condicional_1_RETURN.exp.accept(self)
       print(";",end='', sep='')
 
+    def visit_condicional_1_EXP(self, condicional_1_EXP):
+      condicional_1_EXP.exp.accept(self)
+
     def visit_condicional_1_decl_variavel(self, condicional_1_decl_variavel):
       condicional_1_decl_variavel.decl_variavel.accept(self)
 
@@ -413,8 +431,27 @@ class Visitor(visitor_abstract):
       condicional_2Concrete_2.exp.accept(self)
       print(")",end='', sep='')
       condicional_2Concrete_2.body.accept(self)
-      print(condicional_2Concrete_2.ELSE, "\n", ,end='', sep='')
+      print(condicional_2Concrete_2.ELSE, "\n",end='', sep='')
       condicional_2Concrete_2.condicional_2.accept(self)
+      
+    ###
+
+    def visit_rest_ifConcrete(self, rest_ifConcrete):
+      rest_ifConcrete.body_1.accept(self)
+      print(rest_ifConcrete.ELSE, "\n",end='', sep='')
+      rest_ifConcrete.body_2.accept(self)
+      
+    ###
+
+    def visit_for_logConcrete(self, for_logConcrete):
+      if(for_logConcrete.decl_variavel):
+        for_logConcrete.decl_variavel.accept(self)
+      print(";",end='', sep='')
+      if(for_logConcrete.exp_1):
+        for_logConcrete.exp_1.accept(self)
+      print(";",end='', sep='')
+      if(for_logConcrete.exp_2):
+        for_logConcrete.exp_2.accept(self)
       
     ###
 
