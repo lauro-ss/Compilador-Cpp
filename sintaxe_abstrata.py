@@ -150,11 +150,11 @@ class typedefConcrete(typedef):
       return visitor.visit_typedefConcrete(self)
 
 class typedefConcrete1(typedef):
-    def __init__(self, typedef, tipo, id, decl_typedef):
+    def __init__(self, typedef, tipo, id, decl_typedef_n):
       self.typedef = typedef
       self.tipo = tipo
       self.id = id
-      self.decl_typedef = decl_typedef
+      self.decl_typedef_n = decl_typedef_n
       
     def accept(self, visitor):
       return visitor.visit_typedefConcrete1(self)
@@ -167,16 +167,16 @@ class decl_typedef_n(metaclass=ABCMeta):
         pass
 
 class decl_typedef_nConcrete(decl_typedef_n):
-    def __init__(self, id, decl_typedef_n):
+    def __init__(self, id):
       self.id = id
-      self.decl_typedef_n = decl_typedef_n
       
     def accept(self, visitor):
       return visitor.visit_decl_typedef_nConcrete(self)
 
 class decl_typedef_nConcrete1(decl_typedef_n):
-    def __init__(self, id):
+    def __init__(self, id, decl_typedef_n):
       self.id = id
+      self.decl_typedef_n = decl_typedef_n
       
     def accept(self, visitor):
       return visitor.visit_decl_typedef_nConcrete1(self)

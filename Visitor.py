@@ -476,18 +476,15 @@ class Visitor(visitor_abstract):
       print(typedefConcrete1.typedef,' ', end='', sep='')
       typedefConcrete1.tipo.accept(self)      
       print(' ', typedefConcrete1.id, end='', sep='')
-      typedefConcrete1.decl_typedef.accept(self)
+      typedefConcrete1.decl_typedef_n.accept(self)
       print(';', '\n' , end='', sep='')
 
     ###
     def visit_decl_typedef_nConcrete(self, decl_typedef_nConcrete):
-    #  print(',', decl_typedef_nConcrete.id,' ', end='', sep='')
-    #  if(typedef_nConcrete.decl_typedef_n):
-    #    decl_typedef_nConcrete.decl_typedef_n.accept(self)
-    #    print(' ', end='', sep='')
-    #  print(';', end='', sep='')
-      ''''''
+      print(',', decl_typedef_nConcrete.id, end='', sep='')
 
     def visit_decl_typedef_nConcrete1(self, decl_typedef_nConcrete1):
-    #  print(',', decl_typedef_nConcrete1.id, end='', sep='')
-      ''''''
+      print(',', decl_typedef_nConcrete1.id, end='', sep='')
+      if(decl_typedef_nConcrete1.decl_typedef_n):
+        decl_typedef_nConcrete1.decl_typedef_n.accept(self)
+      

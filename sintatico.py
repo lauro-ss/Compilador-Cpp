@@ -118,9 +118,9 @@ def p_decl_typedef_n(p):
     '''decl_typedef_n : VIRGULA ID decl_typedef_n
                       | VIRGULA ID'''
     if(len(p) == 4):
-      p[0] = sa.decl_typedef_nConcrete(p[2], p[3])
+      p[0] = sa.decl_typedef_nConcrete1(p[2], p[3])
     elif(len(p) == 3):
-      p[0] = sa.decl_typedef_nConcrete(p[2], None)
+      p[0] = sa.decl_typedef_nConcrete(p[2])
 
 def p_using(p):
     '''using : USING ID 2X_DOIS_PONTOS ID PONTO_VIRG

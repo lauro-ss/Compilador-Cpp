@@ -40,7 +40,7 @@ void main(){
 cl = '''
 using namespace std;
 using std::cout;
-typedef int inteiro, abc;
+typedef int inteiro, abc, dan, rosa, rola;
 class teste{
     public:
       int c, d, e = a->t, d = teste(a,b,c,d);
