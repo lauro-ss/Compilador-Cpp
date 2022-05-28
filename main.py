@@ -33,7 +33,10 @@ void main(){
       else
           a = 3;
     else{
-          a = 2;}
+          a = 2;}  
+    for(a = 2;;a++){
+
+    }
 }
 }'''
 
@@ -48,6 +51,16 @@ class teste{
       static void teste( string b, bool c, tipo d){
         int a;
         a = teste(a,b,c,d);
+        if(2+2){
+          if(2+2)
+            2 + 2;
+        }
+        while(true){
+          teste(a,b,c);
+        }
+        for(int a; 2 > 2; a++){
+          teste(a,b,c);
+        }
       }
 };
 
@@ -69,7 +82,7 @@ int main (void){
     using teste::testado;
 }'''
 
-lexema.input(cl)
+lexema.input(d)
 parser = yacc.yacc()
 #parser.parse(debug=True)
 result = parser.parse(debug=False)

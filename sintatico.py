@@ -343,7 +343,6 @@ def p_condicional_1(p):
                      | decl_variavel
                      | typedef
                      | using
-                     | chamada_funcao
                      | WHILE PARENT_ABRE exp PARENT_FECHA body
                      | FOR PARENT_ABRE for_log PARENT_FECHA body
                      | WHILE PARENT_ABRE exp PARENT_FECHA condicional_1
@@ -351,13 +350,13 @@ def p_condicional_1(p):
                      | RETURN exp PONTO_VIRG
                      | RETURN PONTO_VIRG'''
     if(len(p) == 6 and p[1] == 'if'):
-      p[0] = sa.condicional_1_IF(p[1], p[2], p[5])
+      p[0] = sa.condicional_1_IF(p[1], p[3], p[5])
     
     elif(len(p) == 6 and p[1] == 'while'):
-      p[0] = sa.condicional_1_WHILE(p[1], p[2], p[5])
+      p[0] = sa.condicional_1_WHILE(p[1], p[3], p[5])
     
     elif(len(p) == 6 and p[1] == 'for'):
-      p[0] = sa.condicional_1Concrete(p[1], p[2], p[5])
+      p[0] = sa.condicional_1_FOR(p[1], p[3], p[5])
     
     elif(len(p) == 4):
       p[0] = sa.condicional_1_RETURN(p[1],p[2])
@@ -410,33 +409,50 @@ def p_for_log(p):
              | decl_variavel exp PONTO_VIRG
              | decl_variavel exp PONTO_VIRG exp
              | decl_variavel PONTO_VIRG exp
+             | exp PONTO_VIRG PONTO_VIRG exp
+             | exp PONTO_VIRG exp PONTO_VIRG exp
+             | exp PONTO_VIRG PONTO_VIRG
+             | exp PONTO_VIRG exp PONTO_VIRG
              | PONTO_VIRG exp PONTO_VIRG exp
              | PONTO_VIRG exp PONTO_VIRG
              | PONTO_VIRG PONTO_VIRG exp
              | PONTO_VIRG PONTO_VIRG'''
-    if(len(p) == 3):
+  
+    if(len(p) == 3 and p[2] == ';' and isinstance(p[1],sa.decl_variavel)):
       p[0] = sa.for_logConcrete(p[1],None,None)
-    
-    elif(len(p) == 4 and p[3] == ';'):
+  
+    if(len(p) == 4 and p[3] == ';' and isinstance(p[1],sa.decl_variavel)):
       p[0] = sa.for_logConcrete(p[1],p[2],None)
     
-    elif(len(p) == 5 and p[3] == ';'):
+    elif(len(p) == 5 and p[3] == ';' and isinstance(p[1],sa.decl_variavel) and isinstance(p[4],sa.exp)):
       p[0] = sa.for_logConcrete(p[1],p[2],p[4])
     
-    elif(len(p) == 4 and p[2] == ';'):
+    elif(len(p) == 4 and p[2] == ';' and isinstance(p[1],sa.decl_variavel) and isinstance(p[3],sa.exp)):
       p[0] = sa.for_logConcrete(p[1],None,p[3])
-    
-    elif(len(p) == 5 and p[1] == ';'):
+    ##
+    elif(len(p) == 5 and p[2] == ';' and p[3] == ';' and isinstance(p[4],sa.exp) and isinstance(p[1],sa.exp)):
+      p[0] = sa.for_logConcrete(p[1],None,p[4])
+
+    elif(len(p) == 6 and p[2] == ';' and p[4] == ';' and isinstance(p[3],sa.exp) and isinstance(p[1],sa.exp) and isinstance(p[5],sa.exp)):
+      p[0] = sa.for_logConcrete(p[1],p[3],p[5])
+
+    elif(len(p) == 4 and p[2] == ';' and p[3] == ';' and isinstance(p[1],sa.exp)):
+      p[0] = sa.for_logConcrete(p[1],None,None)
+
+    elif(len(p) == 5 and p[2] == ';' and p[4] == ';' and isinstance(p[3],sa.exp) and isinstance(p[1],sa.exp)):
+      p[0] = sa.for_logConcrete(p[1],p[3],None)
+    ##
+    elif(len(p) == 5 and p[1] == ';' and isinstance(p[2],sa.exp) and isinstance(p[4],sa.exp)):
       p[0] = sa.for_logConcrete(None,p[2],p[4])
     
-    elif(len(p) == 4 and p[1] == ';'):
+    elif(len(p) == 4 and p[1] == ';' and isinstance(p[2],sa.exp)):
       p[0] = sa.for_logConcrete(None,p[2],None)
     
-    elif(len(p) == 4 and p[1] == ';' and p[2] == ';'):
-      p[0] = sa.for_logConcrete(p[1])
+    elif(len(p) == 4 and p[1] == ';' and p[2] == ';' and isinstance(p[3],sa.exp)):
+      p[0] = sa.for_logConcrete(None,None,p[3])
     
     elif(len(p) == 3 and p[1] == ';' and p[2] == ';'):
-      p[0] = sa.for_logConcrete(p[1])
+      p[0] = sa.for_logConcrete(None,None,None)
 
 
 def p_tipo(p):

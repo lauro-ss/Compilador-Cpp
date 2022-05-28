@@ -1,4 +1,6 @@
 from visitor_abstract import visitor_abstract
+import sintaxe_abstrata as sa
+
 
 tab = 0
 
@@ -108,7 +110,7 @@ class Visitor(visitor_abstract):
     ###
 
     def visit_bodyConcrete(self, bodyConcrete):
-      print('{',end='', sep='')
+      print('{ \n',end='', sep='')
       if(bodyConcrete.comandos):
         bodyConcrete.comandos.accept(self)
       print('}',end='', sep='')
@@ -117,15 +119,15 @@ class Visitor(visitor_abstract):
 
     def visit_comandosConcrete(self, comandosConcrete):
       if(comandosConcrete.comando):
+        print("\t \t",end='', sep='')
         comandosConcrete.comando.accept(self)
       if(comandosConcrete.comandos):
+        #print("\n",end='', sep='')
         comandosConcrete.comandos.accept(self)
-      print("\n","\t",end='', sep='')
 
     ###
 
     def visit_comandoConcrete(self, comandoConcrete):
-      print("\n","\t","\t",end='', sep='')
       comandoConcrete.condicional.accept(self)
 
     ###
@@ -385,20 +387,22 @@ class Visitor(visitor_abstract):
     def visit_condicional_1_IF(self, condicional_1_IF):
       print(condicional_1_IF.IF, "(",end='', sep='')
       condicional_1_IF.exp.accept(self)
-      print(")",end='', sep='')
+      print(") \n",end='', sep='')
       condicional_1_IF.rest_if.accept(self)
 
     def visit_condicional_1_WHILE(self, condicional_1_WHILE):
       print(condicional_1_WHILE.WHILE, "(",end='', sep='')
-      condicional_1_WHILE.exp
+      condicional_1_WHILE.exp.accept(self)
       print(")",end='', sep='')
-      condicional_1_WHILE.body.accept(self)
+      if(condicional_1_WHILE.body):
+        condicional_1_WHILE.body.accept(self)
 
     def visit_condicional_1_FOR(self, condicional_1_FOR):
       print(condicional_1_FOR.FOR, "(",end='', sep='')
       condicional_1_FOR.for_log.accept(self)
       print(")",end='', sep='')
-      condicional_1_FOR.body.accept(self)
+      if(condicional_1_FOR.body):
+        condicional_1_FOR.body.accept(self)
 
     def visit_condicional_1_RETURN(self, condicional_1_RETURN):
       print(condicional_1_RETURN.RETURN," ",end='', sep='')
@@ -408,6 +412,7 @@ class Visitor(visitor_abstract):
 
     def visit_condicional_1_EXP(self, condicional_1_EXP):
       condicional_1_EXP.exp.accept(self)
+      print(";",end='', sep='')
 
     def visit_condicional_1_decl_variavel(self, condicional_1_decl_variavel):
       condicional_1_decl_variavel.decl_variavel.accept(self)
@@ -423,14 +428,18 @@ class Visitor(visitor_abstract):
     def visit_condicional_2Concrete(self, condicional_2Concrete):
       print(condicional_2Concrete.IF, "(",end='', sep='')
       condicional_2Concrete.exp.accept(self)
-      print(")",end='', sep='')
-      condicional_2Concrete.body.accept(self)
+      print(")\n",end='', sep='')
+      if(condicional_2Concrete.body):
+        condicional_2Concrete.body.accept(self)
+      else:
+        print("{ }",end='', sep='')
     
     def visit_condicional_2Concrete_2(self, condicional_2Concrete_2):
       print(condicional_2Concrete_2.IF, "(" ,end='', sep='')
       condicional_2Concrete_2.exp.accept(self)
-      print(")",end='', sep='')
-      condicional_2Concrete_2.body.accept(self)
+      print(")\n",end='', sep='')
+      if(condicional_2Concrete_2.body):
+        condicional_2Concrete_2.body.accept(self)
       print(condicional_2Concrete_2.ELSE, "\n",end='', sep='')
       condicional_2Concrete_2.condicional_2.accept(self)
       
@@ -445,8 +454,13 @@ class Visitor(visitor_abstract):
 
     def visit_for_logConcrete(self, for_logConcrete):
       if(for_logConcrete.decl_variavel):
-        for_logConcrete.decl_variavel.accept(self)
-      print(";",end='', sep='')
+        if(isinstance(for_logConcrete.decl_variavel,sa.exp)):
+          for_logConcrete.decl_variavel.accept(self)
+          print(";",end='', sep='')
+        else:
+          for_logConcrete.decl_variavel.accept(self)
+      else:
+        print(";",end='', sep='')
       if(for_logConcrete.exp_1):
         for_logConcrete.exp_1.accept(self)
       print(";",end='', sep='')
