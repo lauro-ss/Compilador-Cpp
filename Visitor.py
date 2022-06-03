@@ -58,6 +58,7 @@ class Visitor(visitor_abstract):
       if(decl_funcaoConcrete.tipo):
         if(decl_funcaoConcrete.tipo != 'void'):
           decl_funcaoConcrete.tipo.accept(self)
+          print(' ',end='', sep='') 
         else:
           print(decl_funcaoConcrete.tipo,' ',end='', sep='') 
           

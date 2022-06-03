@@ -3,7 +3,11 @@ import SymbolTable as st
 from Visitor import Visitor
 import sintaxe_abstrata as sa
 
-def coercion(type1, type2):
+def coercion(type1, type2, operador):
+  if(operador == "bool"):
+    if (type1 in st.Number and type2 in st.Number):
+      return st.BOOL
+  else:
     if (type1 in st.Number and type2 in st.Number):
         return st.INT
     elif(type1 in st.Logic and type2 in st.Logic):
@@ -37,21 +41,22 @@ class SemanticVisitor(visitor_abstract):
 
     def visit_decl_funcaoConcrete(self, decl_funcaoConcrete):
       params = {}
-      if(decl_funcaoConcrete.parametros != None):
+      if(decl_funcaoConcrete.parametros):
         params = decl_funcaoConcrete.parametros.accept(self)
         st.addFunction(decl_funcaoConcrete.id, params, decl_funcaoConcrete.tipo.accept(self))
       else:
         st.addFunction(decl_funcaoConcrete.id, params, decl_funcaoConcrete.tipo.accept(self))
-        st.beginScope(decl_funcaoConcrete.id)
+      st.beginScope(decl_funcaoConcrete.id)
       for k in range(0, len(params), 2):
         st.addVar(params[k], params[k+1])
-      decl_funcaoConcrete.body.accept(self)
+      if(decl_funcaoConcrete.body):
+        decl_funcaoConcrete.body.accept(self)
 
     def visit_parametrosConcrete(self, parametrosConcrete):
       if(parametrosConcrete.tipo):
-        return [parametrosConcrete.id] + parametrosConcrete.tipo.accept(self)
+        return [parametrosConcrete.id] + [parametrosConcrete.tipo.accept(self)]
       if(parametrosConcrete.parametros):
-        return [parametrosConcrete.id] + parametrosConcrete.tipo.accept(self) + parametrosConcrete.parametros.accept(self)
+        return [parametrosConcrete.id] + [parametrosConcrete.tipo.accept(self)] + [parametrosConcrete.parametros.accept(self)]
 
     def visit_decl_variavelConcrete(self, decl_variavelConcrete):
       tipoVariavel = decl_variavelConcrete.tipo.accept(self)
@@ -81,14 +86,19 @@ class SemanticVisitor(visitor_abstract):
 
     def visit_expConcrete(self, expConcrete):
       if(expConcrete.exp):
-        if(expConcrete.exp.accept(self) != st.VARIABLE):
-          print("[Error] - Somente é possível realizar atribuição a váriaveis")
-      return expConcrete.exp_1.accept(self)
+        tipoVariavel = expConcrete.exp.accept(self)
+        tipoExp = expConcrete.exp_1.accept(self)
+        if(tipoVariavel == tipoExp):
+          return expConcrete.exp_1.accept(self)
+        else:
+          print("[Error] - O identificador não é compátivel com a expressão.")
+      else:
+        return expConcrete.exp_1.accept(self)
 
     def visit_exp_1_OR(self,exp_1Concrete):
       tipoExp1 = exp_1Concrete.exp_1.accept(self)
       tipoExp2 = exp_1Concrete.exp_2.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2, "bool")
       if (c == None):
         exp_1Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -101,7 +111,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_1_OP_OU(self,exp_1Concrete):
       tipoExp1 = exp_1Concrete.exp_1.accept(self)
       tipoExp2 = exp_1Concrete.exp_2.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"bool")
       if (c == None):
         exp_1Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -117,7 +127,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_2_AND(self,exp_2Concrete):
       tipoExp1 = exp_2Concrete.exp_2.accept(self)
       tipoExp2 = exp_2Concrete.exp_3.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"bool")
       if (c == None):
         exp_2Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -130,7 +140,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_2_OP_E(self,exp_2Concrete):
       tipoExp1 = exp_2Concrete.exp_2.accept(self)
       tipoExp2 = exp_2Concrete.exp_3.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"bool")
       if (c == None):
         exp_2Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -146,7 +156,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_3_XOR(self,exp_3Concrete):
       tipoExp1 = exp_3Concrete.exp_3.accept(self)
       tipoExp2 = exp_3Concrete.exp_4.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"bool")
       if (c == None):
         exp_3Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -159,7 +169,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_3_OP_OU_EX(self,exp_3Concrete):
       tipoExp1 = exp_3Concrete.exp_3.accept(self)
       tipoExp2 = exp_3Concrete.exp_4.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"bool")
       if (c == None):
         exp_3Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -178,7 +188,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_4_IGUAL(self,exp_4Concrete):
       tipoExp1 = exp_4Concrete.exp_4.accept(self)
       tipoExp2 = exp_4Concrete.exp_5.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"bool")
       if (c == None):
         exp_4Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -191,7 +201,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_4_DIFERENTE(self,exp_4Concrete):
       tipoExp1 = exp_4Concrete.exp_4.accept(self)
       tipoExp2 = exp_4Concrete.exp_5.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"bool")
       if (c == None):
         exp_4Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -207,7 +217,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_5_MENOR_Q(self,exp_5Concrete):
       tipoExp1 = exp_5Concrete.exp_5.accept(self)
       tipoExp2 = exp_5Concrete.exp_6.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"bool")
       if (c == None):
         exp_5Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -220,7 +230,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_5_MAIOR_Q(self,exp_5Concrete):
       tipoExp1 = exp_5Concrete.exp_5.accept(self)
       tipoExp2 = exp_5Concrete.exp_6.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2, "bool")
       if (c == None):
         exp_5Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -233,7 +243,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_5_MAIOR_IGUAL(self,exp_5Concrete):
       tipoExp1 = exp_5Concrete.exp_5.accept(self)
       tipoExp2 = exp_5Concrete.exp_6.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"bool")
       if (c == None):
         exp_5Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -246,7 +256,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_5_MENOR_IGUAL(self,exp_5Concrete):
       tipoExp1 = exp_5Concrete.exp_5.accept(self)
       tipoExp2 = exp_5Concrete.exp_6.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2, "bool")
       if (c == None):
         exp_5Concrete.accept(self.printer)
         print('\n\t[Erro] - A expressao ', end='')
@@ -262,7 +272,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_6_SOMA(self,exp_6Concrete):
       tipoExp1 = exp_6Concrete.exp_6.accept(self)
       tipoExp2 = exp_6Concrete.exp_7.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"number")
       if (c == None):
         exp_6Concrete.accept(self.printer)
         print('\n\t[Erro] Soma invalida. A expressao ', end='')
@@ -275,7 +285,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_6_SUB(self,exp_6Concrete):
       tipoExp1 = exp_6Concrete.exp_6.accept(self)
       tipoExp2 = exp_6Concrete.exp_7.accept(self)
-      c = coercion(tipoExp1, tipoExp2)
+      c = coercion(tipoExp1, tipoExp2,"number")
       if (c == None):
         exp_6Concrete.accept(self.printer)
         print('\n\t[Erro] Sub invalida. A expressao ', end='')
@@ -289,16 +299,43 @@ class SemanticVisitor(visitor_abstract):
       return exp_7Concrete.exp_8.accept(self)
 
     def visit_exp_7_MULT(self,exp_7Concrete):
-      exp_7Concrete.exp_7.accept(self)
-      exp_7Concrete.exp_8.accept(self)
+      tipoExp1 = exp_7Concrete.exp_7.accept(self)
+      tipoExp2 = exp_7Concrete.exp_8.accept(self)
+      c = coercion(tipoExp1, tipoExp2,"number")
+      if (c == None):
+        exp_7Concrete.accept(self.printer)
+        print('\n\t[Erro] Sub invalida. A expressao ', end='')
+        exp_7Concrete.exp_7.accept(self.printer)
+        print(' eh do tipo', tipoExp1, 'enquanto a expressao ', end='')
+        exp_7Concrete.exp_8.accept(self.printer)
+        print(' eh do tipo', tipoExp2,'\n')
+      return c
 
     def visit_exp_7_DIV(self,exp_7Concrete):
-      exp_7Concrete.exp_7.accept(self)
-      exp_7Concrete.exp_8.accept(self)
+      tipoExp1 = exp_7Concrete.exp_7.accept(self)
+      tipoExp2 = exp_7Concrete.exp_8.accept(self)
+      c = coercion(tipoExp1, tipoExp2,"number")
+      if (c == None):
+        exp_7Concrete.accept(self.printer)
+        print('\n\t[Erro] Sub invalida. A expressao ', end='')
+        exp_7Concrete.exp_7.accept(self.printer)
+        print(' eh do tipo', tipoExp1, 'enquanto a expressao ', end='')
+        exp_7Concrete.exp_8.accept(self.printer)
+        print(' eh do tipo', tipoExp2,'\n')
+      return c
 
     def visit_exp_7_MODULO(self,exp_7Concrete):
-      exp_7Concrete.exp_7.accept(self)
-      exp_7Concrete.exp_8.accept(self)
+      tipoExp1 = exp_7Concrete.exp_7.accept(self)
+      tipoExp2 = exp_7Concrete.exp_8.accept(self)
+      c = coercion(tipoExp1, tipoExp2,"number")
+      if (c == None):
+        exp_7Concrete.accept(self.printer)
+        print('\n\t[Erro] Sub invalida. A expressao ', end='')
+        exp_7Concrete.exp_7.accept(self.printer)
+        print(' eh do tipo', tipoExp1, 'enquanto a expressao ', end='')
+        exp_7Concrete.exp_8.accept(self.printer)
+        print(' eh do tipo', tipoExp2,'\n')
+      return c
 
     def visit_exp_8Concrete(self,exp_8Concrete):
       return exp_8Concrete.exp_9.accept(self)
@@ -333,14 +370,14 @@ class SemanticVisitor(visitor_abstract):
     def visit_exp_10Concrete(self,exp_10Concrete):
       if(isinstance(exp_10Concrete.value, int)):
         return st.INT
-      elif(isinstance(exp_10Concrete.value, bool)):
+      elif(exp_10Concrete.value == 'true' or exp_10Concrete.value == 'false'):
         return st.BOOL
-      elif(isinstance(exp_10Concrete.value, str)):
+      idName = st.getBindable(exp_10Concrete.value)
+      if(idName):
+        return idName[st.TYPE]
+      elif(exp_10Concrete.value.__contains__('\"')):
         return st.STRING
       else:
-        idName = st.getBindable(exp_10Concrete.value)
-        if (idName != None):
-            return idName[st.TYPE]
         return None
 
     def visit_exp_10_funcao(self,exp_10_funcao):
@@ -372,7 +409,7 @@ class SemanticVisitor(visitor_abstract):
       condicional_1_FOR.for_log.accept(self)
 
     def visit_condicional_1_RETURN(self, condicional_1_RETURN):
-      pass
+      st.endScope()
 
     def visit_condicional_1_EXP(self, condicional_1_EXP):
       condicional_1_EXP.exp.accept(self)
@@ -407,7 +444,7 @@ class SemanticVisitor(visitor_abstract):
     def visit_tipoConcrete(self, tipoConcrete):
       if(tipoConcrete.tipo_v == 'int'):
         return st.INT
-      elif(tipoConcrete.tipo_v == 'bool'):
+      elif(tipoConcrete.tipo_v == 'boolean'):
         return st.BOOL
       elif(tipoConcrete.tipo_v == 'id'):
         return st.TYPE

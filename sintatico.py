@@ -11,13 +11,20 @@ def p_cpp(p):
          | decl_variavel
          | typedef
          | using
+         | exp PONTO_VIRG
+         | exp PONTO_VIRG cpp
          | decl_classe  cpp
          | decl_funcao  cpp
          | decl_variavel cpp
          | typedef cpp
          | using cpp'''
     if(len(p) == 3):
-      p[0] = sa.cppConcrete(p[1],p[2])
+      if(isinstance(p[1], sa.exp)):
+        p[0] = sa.cppConcrete(p[1],None)
+      else:
+        p[0] = sa.cppConcrete(p[1],p[2])
+    elif(len(p) == 4):
+        p[0] = sa.cppConcrete(p[1],p[3])
     else:
       p[0] = sa.cppConcrete(p[1],None)
     
