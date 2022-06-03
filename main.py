@@ -73,19 +73,15 @@ void main(int n){
 
 
 teste = '''
-    using namespace std;
-    typedef int inteiro, realkkk;
-    typedef int inteiro, realkkk;
-    using teste::testado;
-int main (void){
-    typedef int inteiro, realkkk;
-    using teste::testado;
-}'''
+    string a = "2";
+'''
 
-lexema.input(d)
+lexema.input(teste)
 parser = yacc.yacc()
 #parser.parse(debug=True)
 result = parser.parse(debug=False)
+visitor = sv.SemanticVisitor()
+result.accept(visitor)
 visitor = vis.Visitor()
 result.accept(visitor)
 #for token in lexema:

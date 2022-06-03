@@ -2,6 +2,7 @@ import ply.yacc as yacc
 from lexico import *
 import sintaxe_abstrata as sa
 import Visitor as vis
+import SemanticVisitor as sv
 
 
 def p_cpp(p):
