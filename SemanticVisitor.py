@@ -34,23 +34,28 @@ class SemanticVisitor(visitor_abstract):
 
    
     def visit_body_classConcrete(self, body_classConcrete):
-        pass
+      if(body_classConcrete.content_class):
+        body_classConcrete.content_class.accept(self)
+      st.endScope()
 
     def visit_content_classConcrete(self, content_classConcrete):
       pass
 
     def visit_decl_funcaoConcrete(self, decl_funcaoConcrete):
-      params = {}
-      if(decl_funcaoConcrete.parametros):
-        params = decl_funcaoConcrete.parametros.accept(self)
-        st.addFunction(decl_funcaoConcrete.id, params, decl_funcaoConcrete.tipo.accept(self))
+      if(st.getBindable(decl_funcaoConcrete.id) == None):
+        params = {}
+        if(decl_funcaoConcrete.parametros):
+          params = decl_funcaoConcrete.parametros.accept(self)
+          st.addFunction(decl_funcaoConcrete.id, params, decl_funcaoConcrete.tipo.accept(self))
+        else:
+          st.addFunction(decl_funcaoConcrete.id, params, decl_funcaoConcrete.tipo.accept(self))
+        st.beginScope(decl_funcaoConcrete.id)
+        for k in range(0, len(params), 2):
+          st.addVar(params[k], params[k+1])
+        if(decl_funcaoConcrete.body):
+          decl_funcaoConcrete.body.accept(self)
       else:
-        st.addFunction(decl_funcaoConcrete.id, params, decl_funcaoConcrete.tipo.accept(self))
-      st.beginScope(decl_funcaoConcrete.id)
-      for k in range(0, len(params), 2):
-        st.addVar(params[k], params[k+1])
-      if(decl_funcaoConcrete.body):
-        decl_funcaoConcrete.body.accept(self)
+        print("[Erro] - Não é possível exisitr duas ou mais funções com o mesmo nome.")
 
     def visit_parametrosConcrete(self, parametrosConcrete):
       if(parametrosConcrete.tipo):
@@ -60,13 +65,16 @@ class SemanticVisitor(visitor_abstract):
 
     def visit_decl_variavelConcrete(self, decl_variavelConcrete):
       tipoVariavel = decl_variavelConcrete.tipo.accept(self)
-      st.addVar(decl_variavelConcrete.id, tipoVariavel)
-      if(decl_variavelConcrete.exp):
-        tipoExp = decl_variavelConcrete.exp.accept(self)
-        if(tipoExp != tipoVariavel):
-          print("[Error] - A variável não é compativel com o retorno da expressão")
-      if(decl_variavelConcrete.decl_variavel_n):
-        decl_variavelConcrete.decl_variavel_n.accept(self)
+      if(st.getBindable(decl_variavelConcrete.id) == None):
+        st.addVar(decl_variavelConcrete.id, tipoVariavel)
+        if(decl_variavelConcrete.exp):
+          tipoExp = decl_variavelConcrete.exp.accept(self)
+          if(tipoExp != tipoVariavel):
+            print("[Error] - O retorno da expressão não é compatível.")
+        if(decl_variavelConcrete.decl_variavel_n):
+          decl_variavelConcrete.decl_variavel_n.accept(self)
+      else:
+        print("[Erro] - A variável já está declarada.")
 
     def visit_decl_variavel_nConcrete(self, decl_variavel_nConcrete):
       pass
@@ -91,7 +99,7 @@ class SemanticVisitor(visitor_abstract):
         if(tipoVariavel == tipoExp):
           return expConcrete.exp_1.accept(self)
         else:
-          print("[Error] - O identificador não é compátivel com a expressão.")
+          print("[Error] - O identificador não é compatível com a expressão ou não está declarado.")
       else:
         return expConcrete.exp_1.accept(self)
 
@@ -381,19 +389,28 @@ class SemanticVisitor(visitor_abstract):
         return None
 
     def visit_exp_10_funcao(self,exp_10_funcao):
-      pass
+      return exp_10_funcao.funcao.accept(self)
 
     def visit_exp_10_exp(self,exp_10Concrete):
-      pass
+      exp_10Concrete.exp.accept(self)
 
     def visit_chamada_funcaoConcrete(self, chamada_funcaoConcrete):
-      pass
+      bindable = st.getBindable(chamada_funcaoConcrete.id)
+      if (bindable != None and bindable[st.BINDABLE] == st.FUNCTION):
+        typeParams = chamada_funcaoConcrete.parametros_chamada.accept(self)
+        if (list(bindable[st.PARAMS][1::2]).__contains__(typeParams)):
+          return bindable[st.TYPE]
+        else:
+          print("[Erro] - Chamada de funcao invalida.")
+      else:
+        print("[Erro] - A função não foi declarada.")
+      return None
 
     def visit_chamada_funcaoTypeid(self, chamada_funcaoTypeid):
       pass
 
     def visit_parametros_chamadaConcrete(self, parametros_chamadaConcrete):
-      pass
+      return parametros_chamadaConcrete.id.accept(self)
 
     def visit_condicional_1_IF(self, condicional_1_IF):
       type = condicional_1_IF.exp.accept(self)
@@ -409,6 +426,14 @@ class SemanticVisitor(visitor_abstract):
       condicional_1_FOR.for_log.accept(self)
 
     def visit_condicional_1_RETURN(self, condicional_1_RETURN):
+      if(condicional_1_RETURN.exp):
+        tipoExp = condicional_1_RETURN.exp.accept(self)
+        scope = st.symbolTable[-1][st.SCOPE]
+        bindable = st.getBindable(scope)
+        if (tipoExp != bindable[st.TYPE]):
+          condicional_1_RETURN.accept(self.printer)
+          print('\t[Erro] O retorno da funcao', scope, 'eh do tipo', bindable[st.TYPE],end='')
+          print(' no entanto, o retorno passado foi do tipo', tipoExp, '\n')
       st.endScope()
 
     def visit_condicional_1_EXP(self, condicional_1_EXP):

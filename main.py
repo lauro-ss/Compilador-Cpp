@@ -75,16 +75,18 @@ void main(int n){
 teste = '''
   int main(int a){
     a = 2; 
-    return "2";
+    return 2;
   }
+  int a = main(2);
+  int b;
 '''
 
-lexema.input(cl)
+lexema.input(teste)
 parser = yacc.yacc()
 #parser.parse(debug=True)
 result = parser.parse(debug=False)
-#visitor = sv.SemanticVisitor()
-#result.accept(visitor)
+visitor = sv.SemanticVisitor()
+result.accept(visitor)
 visitor = vis.Visitor()
 result.accept(visitor)
 #for token in lexema:

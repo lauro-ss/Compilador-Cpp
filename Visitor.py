@@ -378,7 +378,7 @@ class Visitor(visitor_abstract):
       print(")",end='', sep='')
 
     def visit_parametros_chamadaConcrete(self, parametros_chamadaConcrete):
-      print(parametros_chamadaConcrete.id,end='', sep='')
+      parametros_chamadaConcrete.id.accept(self)
       if(parametros_chamadaConcrete.parametros_chamada):
         print(",",end='', sep='')
         parametros_chamadaConcrete.parametros_chamada.accept(self)

@@ -101,8 +101,8 @@ Rule 95    exp_10 -> PARENT_ABRE exp PARENT_FECHA
 Rule 96    chamada_funcao -> ID PARENT_ABRE parametros_chamada PARENT_FECHA
 Rule 97    chamada_funcao -> ID PARENT_ABRE PARENT_FECHA
 Rule 98    chamada_funcao -> TYPEID PARENT_ABRE exp PARENT_FECHA
-Rule 99    parametros_chamada -> ID VIRGULA parametros_chamada
-Rule 100   parametros_chamada -> ID
+Rule 99    parametros_chamada -> exp VIRGULA parametros_chamada
+Rule 100   parametros_chamada -> exp
 Rule 101   condicional_1 -> IF PARENT_ABRE exp PARENT_FECHA rest_if
 Rule 102   condicional_1 -> exp PONTO_VIRG
 Rule 103   condicional_1 -> decl_variavel
@@ -153,7 +153,7 @@ DOIS_PONTOS          : 14
 ELSE                 : 114 115 116 117 118 119
 FALSE                : 91
 FOR                  : 107 109
-ID                   : 13 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 44 45 45 88 96 97 99 100 134
+ID                   : 13 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 44 45 45 88 96 97 134
 IF                   : 101 112 113 114 115
 IGUAL                : 63
 INT                  : 132
@@ -214,7 +214,7 @@ decl_funcao          : 2 9 17 19 21 23
 decl_typedef_n       : 41 42
 decl_variavel        : 3 10 16 18 20 22 103 120 121 122 123
 decl_variavel_n      : 34 35 36 37
-exp                  : 6 7 33 35 37 38 52 95 98 101 102 106 108 110 112 113 114 115 121 122 122 123 124 124 125 125 125 126 127 127 128 128 129 130
+exp                  : 6 7 33 35 37 38 52 95 98 99 100 101 102 106 108 110 112 113 114 115 121 122 122 123 124 124 125 125 125 126 127 127 128 128 129 130
 exp_1                : 52 53 54 55
 exp_10               : 85 86 87
 exp_2                : 54 55 56 57 58
@@ -2008,13 +2008,83 @@ state 47
 
     (96) chamada_funcao -> ID PARENT_ABRE . parametros_chamada PARENT_FECHA
     (97) chamada_funcao -> ID PARENT_ABRE . PARENT_FECHA
-    (99) parametros_chamada -> . ID VIRGULA parametros_chamada
-    (100) parametros_chamada -> . ID
+    (99) parametros_chamada -> . exp VIRGULA parametros_chamada
+    (100) parametros_chamada -> . exp
+    (52) exp -> . exp RECEBER exp_1
+    (53) exp -> . exp_1
+    (54) exp_1 -> . exp_1 OP_OU exp_2
+    (55) exp_1 -> . exp_1 OR exp_2
+    (56) exp_1 -> . exp_2
+    (57) exp_2 -> . exp_2 OP_E exp_3
+    (58) exp_2 -> . exp_2 AND exp_3
+    (59) exp_2 -> . exp_3
+    (60) exp_3 -> . exp_3 OP_OU_EX exp_4
+    (61) exp_3 -> . exp_3 XOR exp_4
+    (62) exp_3 -> . exp_4
+    (63) exp_4 -> . exp_4 IGUAL exp_5
+    (64) exp_4 -> . exp_4 DIFERENTE exp_5
+    (65) exp_4 -> . exp_5
+    (66) exp_5 -> . exp_5 MENOR_Q exp_6
+    (67) exp_5 -> . exp_5 MAIOR_Q exp_6
+    (68) exp_5 -> . exp_5 MAIOR_IGUAL exp_6
+    (69) exp_5 -> . exp_5 MENOR_IGUAL exp_6
+    (70) exp_5 -> . exp_6
+    (71) exp_6 -> . exp_6 SOMA exp_7
+    (72) exp_6 -> . exp_6 SUB exp_7
+    (73) exp_6 -> . exp_7
+    (74) exp_7 -> . exp_7 MULT exp_8
+    (75) exp_7 -> . exp_7 DIV exp_8
+    (76) exp_7 -> . exp_7 MODULO exp_8
+    (77) exp_7 -> . exp_8
+    (78) exp_8 -> . OP_NOT exp_9
+    (79) exp_8 -> . NOT exp_9
+    (80) exp_8 -> . exp_9 MAIS_MAIS
+    (81) exp_8 -> . exp_9 MENOS_MENOS
+    (82) exp_8 -> . SIZEOF PARENT_ABRE exp_9 PARENT_FECHA
+    (83) exp_8 -> . NEW tipo
+    (84) exp_8 -> . exp_9
+    (85) exp_9 -> . exp_9 PONTO exp_10
+    (86) exp_9 -> . exp_9 SETA exp_10
+    (87) exp_9 -> . exp_10
+    (88) exp_10 -> . ID
+    (89) exp_10 -> . INT_V
+    (90) exp_10 -> . TRUE
+    (91) exp_10 -> . FALSE
+    (92) exp_10 -> . chamada_funcao
+    (93) exp_10 -> . STRING_V
+    (94) exp_10 -> . THIS
+    (95) exp_10 -> . PARENT_ABRE exp PARENT_FECHA
+    (96) chamada_funcao -> . ID PARENT_ABRE parametros_chamada PARENT_FECHA
+    (97) chamada_funcao -> . ID PARENT_ABRE PARENT_FECHA
+    (98) chamada_funcao -> . TYPEID PARENT_ABRE exp PARENT_FECHA
 
-    PARENT_FECHA    shift and go to state 87
-    ID              shift and go to state 85
+    PARENT_FECHA    shift and go to state 86
+    OP_NOT          shift and go to state 26
+    NOT             shift and go to state 28
+    SIZEOF          shift and go to state 29
+    NEW             shift and go to state 30
+    ID              shift and go to state 50
+    INT_V           shift and go to state 32
+    TRUE            shift and go to state 33
+    FALSE           shift and go to state 34
+    STRING_V        shift and go to state 36
+    THIS            shift and go to state 37
+    PARENT_ABRE     shift and go to state 11
+    TYPEID          shift and go to state 38
 
-    parametros_chamada             shift and go to state 86
+    parametros_chamada             shift and go to state 85
+    exp                            shift and go to state 87
+    exp_1                          shift and go to state 15
+    exp_2                          shift and go to state 19
+    exp_3                          shift and go to state 20
+    exp_4                          shift and go to state 21
+    exp_5                          shift and go to state 22
+    exp_6                          shift and go to state 23
+    exp_7                          shift and go to state 24
+    exp_8                          shift and go to state 25
+    exp_9                          shift and go to state 27
+    exp_10                         shift and go to state 31
+    chamada_funcao                 shift and go to state 35
 
 state 48
 
@@ -3423,21 +3493,12 @@ state 84
 
 state 85
 
-    (99) parametros_chamada -> ID . VIRGULA parametros_chamada
-    (100) parametros_chamada -> ID .
+    (96) chamada_funcao -> ID PARENT_ABRE parametros_chamada . PARENT_FECHA
 
-    VIRGULA         shift and go to state 122
-    PARENT_FECHA    reduce using rule 100 (parametros_chamada -> ID .)
+    PARENT_FECHA    shift and go to state 122
 
 
 state 86
-
-    (96) chamada_funcao -> ID PARENT_ABRE parametros_chamada . PARENT_FECHA
-
-    PARENT_FECHA    shift and go to state 123
-
-
-state 87
 
     (97) chamada_funcao -> ID PARENT_ABRE PARENT_FECHA .
 
@@ -3466,6 +3527,17 @@ state 87
     RECEBER         reduce using rule 97 (chamada_funcao -> ID PARENT_ABRE PARENT_FECHA .)
     PARENT_FECHA    reduce using rule 97 (chamada_funcao -> ID PARENT_ABRE PARENT_FECHA .)
     VIRGULA         reduce using rule 97 (chamada_funcao -> ID PARENT_ABRE PARENT_FECHA .)
+
+
+state 87
+
+    (99) parametros_chamada -> exp . VIRGULA parametros_chamada
+    (100) parametros_chamada -> exp .
+    (52) exp -> exp . RECEBER exp_1
+
+    VIRGULA         shift and go to state 123
+    PARENT_FECHA    reduce using rule 100 (parametros_chamada -> exp .)
+    RECEBER         shift and go to state 45
 
 
 state 88
@@ -4227,16 +4299,6 @@ state 121
 
 state 122
 
-    (99) parametros_chamada -> ID VIRGULA . parametros_chamada
-    (99) parametros_chamada -> . ID VIRGULA parametros_chamada
-    (100) parametros_chamada -> . ID
-
-    ID              shift and go to state 85
-
-    parametros_chamada             shift and go to state 142
-
-state 123
-
     (96) chamada_funcao -> ID PARENT_ABRE parametros_chamada PARENT_FECHA .
 
     MAIS_MAIS       reduce using rule 96 (chamada_funcao -> ID PARENT_ABRE parametros_chamada PARENT_FECHA .)
@@ -4265,6 +4327,86 @@ state 123
     PARENT_FECHA    reduce using rule 96 (chamada_funcao -> ID PARENT_ABRE parametros_chamada PARENT_FECHA .)
     VIRGULA         reduce using rule 96 (chamada_funcao -> ID PARENT_ABRE parametros_chamada PARENT_FECHA .)
 
+
+state 123
+
+    (99) parametros_chamada -> exp VIRGULA . parametros_chamada
+    (99) parametros_chamada -> . exp VIRGULA parametros_chamada
+    (100) parametros_chamada -> . exp
+    (52) exp -> . exp RECEBER exp_1
+    (53) exp -> . exp_1
+    (54) exp_1 -> . exp_1 OP_OU exp_2
+    (55) exp_1 -> . exp_1 OR exp_2
+    (56) exp_1 -> . exp_2
+    (57) exp_2 -> . exp_2 OP_E exp_3
+    (58) exp_2 -> . exp_2 AND exp_3
+    (59) exp_2 -> . exp_3
+    (60) exp_3 -> . exp_3 OP_OU_EX exp_4
+    (61) exp_3 -> . exp_3 XOR exp_4
+    (62) exp_3 -> . exp_4
+    (63) exp_4 -> . exp_4 IGUAL exp_5
+    (64) exp_4 -> . exp_4 DIFERENTE exp_5
+    (65) exp_4 -> . exp_5
+    (66) exp_5 -> . exp_5 MENOR_Q exp_6
+    (67) exp_5 -> . exp_5 MAIOR_Q exp_6
+    (68) exp_5 -> . exp_5 MAIOR_IGUAL exp_6
+    (69) exp_5 -> . exp_5 MENOR_IGUAL exp_6
+    (70) exp_5 -> . exp_6
+    (71) exp_6 -> . exp_6 SOMA exp_7
+    (72) exp_6 -> . exp_6 SUB exp_7
+    (73) exp_6 -> . exp_7
+    (74) exp_7 -> . exp_7 MULT exp_8
+    (75) exp_7 -> . exp_7 DIV exp_8
+    (76) exp_7 -> . exp_7 MODULO exp_8
+    (77) exp_7 -> . exp_8
+    (78) exp_8 -> . OP_NOT exp_9
+    (79) exp_8 -> . NOT exp_9
+    (80) exp_8 -> . exp_9 MAIS_MAIS
+    (81) exp_8 -> . exp_9 MENOS_MENOS
+    (82) exp_8 -> . SIZEOF PARENT_ABRE exp_9 PARENT_FECHA
+    (83) exp_8 -> . NEW tipo
+    (84) exp_8 -> . exp_9
+    (85) exp_9 -> . exp_9 PONTO exp_10
+    (86) exp_9 -> . exp_9 SETA exp_10
+    (87) exp_9 -> . exp_10
+    (88) exp_10 -> . ID
+    (89) exp_10 -> . INT_V
+    (90) exp_10 -> . TRUE
+    (91) exp_10 -> . FALSE
+    (92) exp_10 -> . chamada_funcao
+    (93) exp_10 -> . STRING_V
+    (94) exp_10 -> . THIS
+    (95) exp_10 -> . PARENT_ABRE exp PARENT_FECHA
+    (96) chamada_funcao -> . ID PARENT_ABRE parametros_chamada PARENT_FECHA
+    (97) chamada_funcao -> . ID PARENT_ABRE PARENT_FECHA
+    (98) chamada_funcao -> . TYPEID PARENT_ABRE exp PARENT_FECHA
+
+    OP_NOT          shift and go to state 26
+    NOT             shift and go to state 28
+    SIZEOF          shift and go to state 29
+    NEW             shift and go to state 30
+    ID              shift and go to state 50
+    INT_V           shift and go to state 32
+    TRUE            shift and go to state 33
+    FALSE           shift and go to state 34
+    STRING_V        shift and go to state 36
+    THIS            shift and go to state 37
+    PARENT_ABRE     shift and go to state 11
+    TYPEID          shift and go to state 38
+
+    exp                            shift and go to state 87
+    parametros_chamada             shift and go to state 142
+    exp_1                          shift and go to state 15
+    exp_2                          shift and go to state 19
+    exp_3                          shift and go to state 20
+    exp_4                          shift and go to state 21
+    exp_5                          shift and go to state 22
+    exp_6                          shift and go to state 23
+    exp_7                          shift and go to state 24
+    exp_8                          shift and go to state 25
+    exp_9                          shift and go to state 27
+    exp_10                         shift and go to state 31
+    chamada_funcao                 shift and go to state 35
 
 state 124
 
@@ -4573,9 +4715,9 @@ state 141
 
 state 142
 
-    (99) parametros_chamada -> ID VIRGULA parametros_chamada .
+    (99) parametros_chamada -> exp VIRGULA parametros_chamada .
 
-    PARENT_FECHA    reduce using rule 99 (parametros_chamada -> ID VIRGULA parametros_chamada .)
+    PARENT_FECHA    reduce using rule 99 (parametros_chamada -> exp VIRGULA parametros_chamada .)
 
 
 state 143

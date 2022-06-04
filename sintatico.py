@@ -338,8 +338,8 @@ def p_chamada_funcao(p):
       p[0] = sa.chamada_funcaoConcrete(p[1],None)
       
 def p_parametros_chamada(p):
-    '''parametros_chamada : ID VIRGULA parametros_chamada
-                          | ID'''
+    '''parametros_chamada : exp VIRGULA parametros_chamada
+                          | exp'''
     if(len(p) == 4):
       p[0] = sa.parametros_chamadaConcrete(p[1],p[3])
     elif(len(p) == 2):
