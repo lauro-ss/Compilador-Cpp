@@ -399,6 +399,8 @@ class Visitor(visitor_abstract):
       print(")",end='', sep='')
       if(condicional_1_WHILE.body):
         condicional_1_WHILE.body.accept(self)
+      else:
+        print("{}",end='', sep='')
 
     def visit_condicional_1_FOR(self, condicional_1_FOR):
       print(condicional_1_FOR.FOR, "(",end='', sep='')
