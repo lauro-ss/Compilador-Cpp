@@ -72,21 +72,14 @@ void main(int n){
 
 
 teste = '''
-  int c;
-  int main(int a){
-    a = 2;
-    c = 2;
-    return 2;
-    for(a = 2;a < 10;a++){
-      int cc;
-    }
-  }
-  int a = main(2);
-  int b;
   class pessoa{
     public:
       int d;
     int corpo(){}
+  };
+  class pessoa{
+    public:
+      int dd;
   };
 '''
 teste2 = '''

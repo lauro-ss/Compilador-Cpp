@@ -27,10 +27,13 @@ class SemanticVisitor(visitor_abstract):
         cppConcrete.cpp.accept(self)
     
     def visit_decl_classeConcrete(self, decl_classeConcrete):
-      st.addClass(decl_classeConcrete.id)
-      st.beginScope(decl_classeConcrete.id)
-      if(decl_classeConcrete.body_class):
-        decl_classeConcrete.body_class.accept(self)
+      if(st.getBindable(decl_classeConcrete.id) == None):
+        st.addClass(decl_classeConcrete.id)
+        st.beginScope(decl_classeConcrete.id)
+        if(decl_classeConcrete.body_class):
+          decl_classeConcrete.body_class.accept(self)
+      else:
+        print("[Error] - Não é possível existir duas classes com mesmo nome.")
 
    
     def visit_body_classConcrete(self, body_classConcrete):
