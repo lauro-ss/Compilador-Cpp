@@ -8,7 +8,6 @@ e = '''int main(){
                     int a;
                    } 
                   int b, a, c, d, e; 
-                  int c; 
                   return c;
 }'''
 
@@ -73,8 +72,10 @@ void main(int n){
 
 
 teste = '''
+  int c;
   int main(int a){
-    a = 2; 
+    a = 2;
+    c = 2;
     return 2;
   }
   int a = main(2);
@@ -85,8 +86,8 @@ lexema.input(teste)
 parser = yacc.yacc()
 #parser.parse(debug=True)
 result = parser.parse(debug=False)
-visitor = sv.SemanticVisitor()
-result.accept(visitor)
+#visitor = sv.SemanticVisitor()
+#result.accept(visitor)
 visitor = vis.Visitor()
 result.accept(visitor)
 #for token in lexema:

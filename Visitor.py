@@ -7,7 +7,7 @@ tab = 0
 def blank():
     p = ''
     for x in range(tab):
-        p = p + ' '
+        p = p + '\t'
     return p
 
 class Visitor(visitor_abstract):
@@ -96,7 +96,7 @@ class Visitor(visitor_abstract):
         decl_variavelConcrete.exp.accept(self)
       if(decl_variavelConcrete.decl_variavel_n):
         decl_variavelConcrete.decl_variavel_n.accept(self)
-      print(";",end='', sep='')
+      print(";")
         
     ###
 
@@ -111,16 +111,19 @@ class Visitor(visitor_abstract):
     ###
 
     def visit_bodyConcrete(self, bodyConcrete):
-      print('{ \n',end='', sep='')
+      print(blank(),'{\n',end='', sep='')
+      global tab
+      tab = tab + 1;
       if(bodyConcrete.comandos):
         bodyConcrete.comandos.accept(self)
-      print('}',end='', sep='')
+      print(blank(),'}')
+      tab = tab + 1;
 
     ###
 
     def visit_comandosConcrete(self, comandosConcrete):
       if(comandosConcrete.comando):
-        print("\t \t",end='', sep='')
+        print(blank(),end='', sep='')
         comandosConcrete.comando.accept(self)
       if(comandosConcrete.comandos):
         #print("\n",end='', sep='')
@@ -388,7 +391,7 @@ class Visitor(visitor_abstract):
     def visit_condicional_1_IF(self, condicional_1_IF):
       print(condicional_1_IF.IF, "(",end='', sep='')
       condicional_1_IF.exp.accept(self)
-      print(") \n",end='', sep='')
+      print(")",end='', sep='')
       condicional_1_IF.rest_if.accept(self)
 
     def visit_condicional_1_WHILE(self, condicional_1_WHILE):
@@ -502,4 +505,3 @@ class Visitor(visitor_abstract):
       print(',', decl_typedef_nConcrete1.id, end='', sep='')
       if(decl_typedef_nConcrete1.decl_typedef_n):
         decl_typedef_nConcrete1.decl_typedef_n.accept(self)
-      
