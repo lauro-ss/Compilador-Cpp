@@ -77,12 +77,28 @@ teste = '''
     a = 2;
     c = 2;
     return 2;
+    for(a = 2;a < 10;a++){
+      int cc;
+    }
   }
   int a = main(2);
   int b;
+  class pessoa{
+    public:
+      int d;
+    int corpo(){}
+  };
+'''
+teste2 = '''
+    int main(int a){
+    for(a = 2;a < 10;a++){
+      int cc;
+    }
+    while(true){}
+}
 '''
 
-lexema.input(d)
+lexema.input(teste2)
 parser = yacc.yacc()
 #parser.parse(debug=True)
 result = parser.parse(debug=False)

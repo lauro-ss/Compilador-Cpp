@@ -113,11 +113,10 @@ class Visitor(visitor_abstract):
     def visit_bodyConcrete(self, bodyConcrete):
       print(blank(),'{\n',end='', sep='')
       global tab
-      #tab = tab + 1;
+      tab = tab + 3;
       if(bodyConcrete.comandos):
         bodyConcrete.comandos.accept(self)
-      tab = tab + 1;
-      print(blank(),'}')
+      print('\n}')
 
     ###
 
@@ -126,7 +125,7 @@ class Visitor(visitor_abstract):
         print(blank(),end='', sep='')
         comandosConcrete.comando.accept(self)
       if(comandosConcrete.comandos):
-        #print("\n",end='', sep='')
+        print("\n",end='', sep='')
         comandosConcrete.comandos.accept(self)
 
     ###

@@ -39,7 +39,10 @@ class SemanticVisitor(visitor_abstract):
       st.endScope()
 
     def visit_content_classConcrete(self, content_classConcrete):
-      pass
+      if(content_classConcrete.decl):
+        content_classConcrete.decl.accept(self)
+      if(content_classConcrete.content_class):
+        content_classConcrete.content_class.accept(self)
 
     def visit_decl_funcaoConcrete(self, decl_funcaoConcrete):
       if(st.getBindable(decl_funcaoConcrete.id) == None):
@@ -80,7 +83,10 @@ class SemanticVisitor(visitor_abstract):
         print("[Erro] - A variável já está declarada.")
 
     def visit_decl_variavel_nConcrete(self, decl_variavel_nConcrete):
-      pass
+      if(decl_variavel_nConcrete.exp):
+        decl_variavel_nConcrete.exp.accept(self)
+      if(decl_variavel_nConcrete.decl_variavel_n):
+        decl_variavel_nConcrete.decl_variavel_n.accept(self)
 
     def visit_bodyConcrete(self, bodyConcrete):
       if(bodyConcrete.comandos):
@@ -352,31 +358,41 @@ class SemanticVisitor(visitor_abstract):
       return exp_8Concrete.exp_9.accept(self)
 
     def visit_exp_8_SIZEOF(self,exp_8Concrete):
-      pass
+      exp_8Concrete.exp_9.accept(self)
 
     def visit_exp_8_OP_NOT(self,exp_8Concrete):
-      pass
+      exp_8Concrete.exp_9.accept(self)
 
     def visit_exp_8_NOT(self,exp_8Concrete):
-      pass
+      exp_8Concrete.exp_9.accept(self)
 
     def visit_exp_8_NEW(self,exp_8Concrete):
-      pass
+      exp_8Concrete.tipo.accept(self)
 
     def visit_exp_8_MAIS_MAIS(self,exp_8Concrete):
-      pass
+      tipoExp1 = exp_8Concrete.exp_9.accept(self)
+      c = coercion(tipoExp1, st.INT,"number")
+      if (c == None):
+        print("[Error] - A utilização do comando '++' só é válido para váriaveis de tipo númerico.")
+      return c
+      #return exp_8Concrete.exp_9.accept(self)
 
     def visit_exp_8_MENOS_MENOS(self,exp_8Concrete):
-      pass
+      tipoExp1 = exp_8Concrete.exp_9.accept(self)
+      c = coercion(tipoExp1, st.INT,"number")
+      if (c == None):
+        print("[Error] - A utilização do comando '--' só é válido para váriaveis de tipo númerico.")
+      return c
+      #return exp_8Concrete.exp_9.accept(self)
 
     def visit_exp_9Concrete(self,exp_9Concrete):
       return exp_9Concrete.exp_10.accept(self)
 
     def visit_exp_9_PONTO(self,exp_9Concrete):
-      pass
+      return exp_9Concrete.exp_10.accept(self)
 
     def visit_exp_9_SETA(self,exp_9Concrete):
-      pass
+      return exp_9Concrete.exp_10.accept(self)
 
     def visit_exp_10Concrete(self,exp_10Concrete):
       if(isinstance(exp_10Concrete.value, int)):
@@ -395,7 +411,7 @@ class SemanticVisitor(visitor_abstract):
       return exp_10_funcao.funcao.accept(self)
 
     def visit_exp_10_exp(self,exp_10Concrete):
-      exp_10Concrete.exp.accept(self)
+      return exp_10Concrete.exp.accept(self)
 
     def visit_chamada_funcaoConcrete(self, chamada_funcaoConcrete):
       bindable = st.getBindable(chamada_funcaoConcrete.id)
@@ -418,12 +434,12 @@ class SemanticVisitor(visitor_abstract):
     def visit_condicional_1_IF(self, condicional_1_IF):
       type = condicional_1_IF.exp.accept(self)
       if(type != st.BOOL):
-        print("Erro no if aqui")
+        print("[Error] - O comando IF espera uma expressão booleana.")
 
     def visit_condicional_1_WHILE(self, condicional_1_WHILE):
       type = condicional_1_WHILE.exp.accept(self)
       if(type != st.BOOL):
-        print("Erro no while aqui")
+        print("[Error] - O comando WHILE espera uma expressão booleana.")
 
     def visit_condicional_1_FOR(self, condicional_1_FOR):
       condicional_1_FOR.for_log.accept(self)
@@ -454,20 +470,23 @@ class SemanticVisitor(visitor_abstract):
     def visit_condicional_2Concrete(self, condicional_2Concrete):
       tipo = condicional_2Concrete.exp.accept(self)
       if(tipo != st.BOOL):
-        print("Erro aqui no if 2")
+        print("[Error] - O comando IF espera uma expressão booleana.")
 
     def visit_condicional_2Concrete_2(self, condicional_2Concrete_2):
       tipo = condicional_2Concrete_2.exp.accept(self)
       if(tipo != st.BOOL):
-        print("erro aqui no ifff")
+        print("[Error] - O comando IF espera uma expressão booleana.")
 
     def visit_rest_ifConcrete(self, rest_ifConcrete):
-      pass
+      if(rest_ifConcrete.body_1):
+        rest_ifConcrete.body_1.accept(self)
+      if(rest_ifConcrete.body_2):
+        rest_ifConcrete.body_2.accept(self)
 
     def visit_for_logConcrete(self, for_logConcrete):
-      tipo = for_logConcrete.exp_2.accept(self)
+      tipo = for_logConcrete.exp_1.accept(self)
       if(tipo != st.BOOL):
-        print("erro aqui no for")
+        print("[Error] - O comando FOR espera uma expressão booleana.")
 
     def visit_tipoConcrete(self, tipoConcrete):
       if(tipoConcrete.tipo_v == 'int'):
