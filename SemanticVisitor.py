@@ -48,7 +48,10 @@ class SemanticVisitor(visitor_abstract):
           params = decl_funcaoConcrete.parametros.accept(self)
           st.addFunction(decl_funcaoConcrete.id, params, decl_funcaoConcrete.tipo.accept(self))
         else:
-          st.addFunction(decl_funcaoConcrete.id, params, decl_funcaoConcrete.tipo.accept(self))
+          if(decl_funcaoConcrete.tipo != "void"):
+            st.addFunction(decl_funcaoConcrete.id, params, decl_funcaoConcrete.tipo.accept(self))
+          else:
+            st.addFunction(decl_funcaoConcrete.id, params, None)
         st.beginScope(decl_funcaoConcrete.id)
         for k in range(0, len(params), 2):
           st.addVar(params[k], params[k+1])

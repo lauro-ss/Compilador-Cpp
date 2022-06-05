@@ -82,12 +82,12 @@ teste = '''
   int b;
 '''
 
-lexema.input(teste)
+lexema.input(d)
 parser = yacc.yacc()
 #parser.parse(debug=True)
 result = parser.parse(debug=False)
-#visitor = sv.SemanticVisitor()
-#result.accept(visitor)
+visitor = sv.SemanticVisitor()
+result.accept(visitor)
 visitor = vis.Visitor()
 result.accept(visitor)
 #for token in lexema:

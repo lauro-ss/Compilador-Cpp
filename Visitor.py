@@ -7,7 +7,7 @@ tab = 0
 def blank():
     p = ''
     for x in range(tab):
-        p = p + '\t'
+        p = p + ' '
     return p
 
 class Visitor(visitor_abstract):
@@ -113,11 +113,11 @@ class Visitor(visitor_abstract):
     def visit_bodyConcrete(self, bodyConcrete):
       print(blank(),'{\n',end='', sep='')
       global tab
-      tab = tab + 1;
+      #tab = tab + 1;
       if(bodyConcrete.comandos):
         bodyConcrete.comandos.accept(self)
-      print(blank(),'}')
       tab = tab + 1;
+      print(blank(),'}')
 
     ###
 
